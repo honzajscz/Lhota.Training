@@ -1,0 +1,825 @@
+<title>Lhotecká přípravka</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+  :root {
+    --bg: #f1f2ec;
+    --surface: #ffffff;
+    --surface2: #e9eae2;
+    --ink: #1a1d20;
+    --muted: #5c6367;
+    --line: #d6d9cd;
+    --accent: #f5b301;        /* signální jantarová – výplně */
+    --accent-ink: #201a00;    /* text na jantarové */
+    --accent-text: #8a5d00;   /* jantarová pro text na světlém podkladu */
+    --plate-bg: #22252a;      /* tabule se šifrou – schválně tmavá v obou tématech */
+    --plate-ink: #f3efe4;
+    --good: #2e7d4f;
+    --good-soft: #dcefe3;
+    --bad: #b3403a;
+    --focus: #2b6cb0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141619;
+      --surface: #1d2126;
+      --surface2: #23282e;
+      --ink: #ece9e0;
+      --muted: #9aa1a7;
+      --line: #2e343b;
+      --accent: #f5b301;
+      --accent-ink: #201a00;
+      --accent-text: #f5b301;
+      --plate-bg: #101215;
+      --plate-ink: #f3efe4;
+      --good: #57c98b;
+      --good-soft: #17301f;
+      --bad: #e07a75;
+      --focus: #7aa7d9;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #141619;
+    --surface: #1d2126;
+    --surface2: #23282e;
+    --ink: #ece9e0;
+    --muted: #9aa1a7;
+    --line: #2e343b;
+    --accent: #f5b301;
+    --accent-ink: #201a00;
+    --accent-text: #f5b301;
+    --plate-bg: #101215;
+    --plate-ink: #f3efe4;
+    --good: #57c98b;
+    --good-soft: #17301f;
+    --bad: #e07a75;
+    --focus: #7aa7d9;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+  }
+  .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+
+  header.app {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 16px calc(10px);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .badge {
+    background: var(--accent); color: var(--accent-ink);
+    font-weight: 800; font-size: 13px; letter-spacing: .08em;
+    padding: 4px 8px; border-radius: 4px; text-transform: uppercase;
+    white-space: nowrap;
+  }
+  header.app h1 { font-size: 17px; margin: 0; font-weight: 800; letter-spacing: .01em; flex: 1; }
+  .score { font-size: 13px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  main { max-width: 640px; margin: 0 auto; padding: 16px; }
+
+  /* ── záložky ── */
+  nav.tabs {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 30;
+    display: flex;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  nav.tabs button {
+    flex: 1; padding: 12px 4px 10px;
+    background: none; border: none; cursor: pointer;
+    font: inherit; font-size: 13px; font-weight: 600;
+    color: var(--muted);
+    border-top: 3px solid transparent;
+  }
+  nav.tabs button[aria-selected="true"] { color: var(--accent-text); border-top-color: var(--accent); }
+  nav.tabs button:focus-visible, button:focus-visible, input:focus-visible, a:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--focus); outline-offset: 2px;
+  }
+
+  section.tab { display: none; }
+  section.tab.active { display: block; }
+
+  .etapa-head {
+    display: flex; align-items: baseline; gap: 10px;
+    margin: 26px 0 10px;
+  }
+  .etapa-head:first-child { margin-top: 4px; }
+  .etapa-head .eno {
+    font-weight: 800; font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--accent-ink); background: var(--accent);
+    padding: 2px 7px; border-radius: 3px;
+  }
+  .etapa-head h2 { font-size: 16px; margin: 0; font-weight: 800; }
+  .etapa-head .esub { font-size: 12px; color: var(--muted); }
+
+  .station {
+    width: 100%; text-align: left;
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--line); border-radius: 10px;
+    padding: 12px 14px; margin-bottom: 8px;
+    font: inherit; color: inherit; cursor: pointer;
+  }
+  .station .num {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-weight: 700; font-size: 15px;
+    background: var(--plate-bg); color: var(--plate-ink);
+    border-radius: 6px; min-width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    border-bottom: 3px solid var(--accent);
+    flex-shrink: 0;
+  }
+  .station.done .num { border-bottom-color: var(--good); }
+  .station .t { flex: 1; min-width: 0; }
+  .station .t b { display: block; font-size: 15px; }
+  .station .t span { font-size: 12.5px; color: var(--muted); }
+  .station .stars { font-size: 13px; letter-spacing: .1em; color: var(--accent-text); white-space: nowrap; }
+  .station .stars .off { color: var(--line); }
+  .station.done .flag { color: var(--good); font-weight: 700; }
+
+  /* ── detail šifry ── */
+  .puzzle { display: none; }
+  .puzzle.active { display: block; }
+  .backrow { margin-bottom: 12px; }
+  .backrow button {
+    background: none; border: none; color: var(--accent-text);
+    font: inherit; font-weight: 700; cursor: pointer; padding: 6px 0;
+  }
+  .p-head { margin: 0 0 2px; font-size: 21px; font-weight: 800; text-wrap: balance; }
+  .p-sub { color: var(--muted); font-size: 13px; margin: 0 0 14px; }
+  .flavor { margin: 0 0 14px; max-width: 60ch; }
+
+  .plate {
+    background: var(--plate-bg); color: var(--plate-ink);
+    border-radius: 12px;
+    border: 2px solid var(--accent);
+    padding: 20px 16px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 20px; line-height: 1.9;
+    text-align: center;
+    overflow-x: auto;
+    margin: 0 0 16px;
+    word-break: break-word;
+  }
+  .plate.big { font-size: 28px; letter-spacing: .06em; }
+  .plate small { display: block; font-size: 12px; color: #b8b09a; font-family: inherit; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 10px; }
+  .plate ul { list-style: none; margin: 0; padding: 0; text-align: left; display: inline-block; }
+
+  .answer { display: flex; gap: 8px; margin-bottom: 6px; }
+  .answer input {
+    flex: 1; min-width: 0;
+    font: inherit; font-size: 17px;
+    padding: 11px 12px;
+    border: 1px solid var(--line); border-radius: 8px;
+    background: var(--surface); color: var(--ink);
+    text-transform: uppercase;
+  }
+  .answer button {
+    font: inherit; font-weight: 800;
+    background: var(--accent); color: var(--accent-ink);
+    border: none; border-radius: 8px; padding: 0 18px; cursor: pointer;
+  }
+  .verdict { min-height: 22px; font-size: 14px; margin-bottom: 12px; }
+  .verdict.ok { color: var(--good); font-weight: 700; }
+  .verdict.ko { color: var(--bad); }
+
+  .solvedbox {
+    background: var(--good-soft); border: 1px solid var(--good);
+    border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 15px;
+  }
+
+  .hints { display: grid; gap: 8px; margin: 18px 0; }
+  .hints .hint {
+    border: 1px dashed var(--line); border-radius: 10px; padding: 10px 12px;
+    background: var(--surface);
+  }
+  .hint .h-label { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .hint button.reveal {
+    display: block; width: 100%; text-align: left;
+    background: none; border: none; padding: 4px 0 0; cursor: pointer;
+    font: inherit; color: var(--accent-text); font-weight: 700;
+  }
+  .hint .h-body { margin: 6px 0 0; font-size: 15px; }
+  .hint .h-body a { color: var(--accent-text); }
+
+  /* ── tahák ── */
+  .intro { color: var(--muted); font-size: 14.5px; max-width: 62ch; margin: 4px 0 18px; }
+  details.theory {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    margin-bottom: 8px; overflow: hidden;
+  }
+  details.theory summary {
+    list-style: none; cursor: pointer;
+    padding: 13px 14px; font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  details.theory summary::-webkit-details-marker { display: none; }
+  details.theory summary::after { content: "+"; margin-left: auto; color: var(--muted); font-weight: 400; font-size: 18px; }
+  details.theory[open] summary::after { content: "–"; }
+  details.theory .body { padding: 0 14px 14px; font-size: 15px; }
+  details.theory .body p { max-width: 62ch; }
+  .tag {
+    font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent-ink); background: var(--accent); border-radius: 3px; padding: 2px 6px;
+    flex-shrink: 0;
+  }
+  table.ref {
+    border-collapse: collapse; width: 100%; font-size: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  .scrollx { overflow-x: auto; }
+  table.ref th, table.ref td {
+    border: 1px solid var(--line); padding: 5px 7px; text-align: center;
+  }
+  table.ref th { background: var(--surface2); font-size: 12px; letter-spacing: .05em; }
+  .grid-abc {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    gap: 4px; margin: 8px 0;
+  }
+  .grid-abc div {
+    border: 1px solid var(--line); border-radius: 6px; padding: 5px 6px;
+    font-size: 14px; text-align: center; background: var(--surface2);
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+  }
+  .grid-abc b { color: var(--accent-text); }
+
+  .checklist { margin: 8px 0 4px; padding-left: 20px; }
+  .checklist li { margin-bottom: 8px; max-width: 60ch; }
+
+  .about p, .about li { max-width: 62ch; }
+  .about a { color: var(--accent-text); }
+  .about .fact {
+    display: flex; gap: 10px; align-items: baseline;
+    border-bottom: 1px solid var(--line); padding: 8px 0; font-size: 15px;
+  }
+  .about .fact b { min-width: 110px; display: inline-block; }
+
+  .resetrow { margin: 28px 0 8px; text-align: center; }
+  .resetrow button {
+    font: inherit; font-size: 13px; color: var(--muted);
+    background: none; border: 1px solid var(--line); border-radius: 8px;
+    padding: 8px 14px; cursor: pointer;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .station, .answer button, nav.tabs button { transition: background-color .15s, color .15s, border-color .15s; }
+  }
+</style>
+
+<header class="app">
+  <span class="badge">LT XXVII</span>
+  <h1>Lhotecká přípravka</h1>
+  <span class="score" id="scoreTop">0/15</span>
+</header>
+
+<main>
+  <!-- ═══════════ TRÉNINK ═══════════ -->
+  <section class="tab active" id="tab-trenink">
+    <div id="stationList"></div>
+    <div id="puzzleView" class="puzzle"></div>
+    <div class="resetrow" id="resetRow">
+      <button id="resetBtn">Smazat postup a začít znovu</button>
+    </div>
+  </section>
+
+  <!-- ═══════════ TAHÁK ═══════════ -->
+  <section class="tab" id="tab-tahak">
+    <p class="intro">Na Lhotě ti nikdo neřekne, jakou šifrou je zpráva zašifrovaná — poznat princip je půlka úlohy.
+    Tenhle tahák smíš používat i při tréninku: přesně tak to funguje na závodě, kde má tým s sebou vytištěné tabulky.</p>
+    <div id="theoryList"></div>
+  </section>
+
+  <!-- ═══════════ O HŘE ═══════════ -->
+  <section class="tab about" id="tab-ohre">
+    <h2 style="margin-top:4px">Co je Lhota Trophy</h2>
+    <p>Lhota Trophy je legendární <b>automobilová šifrovací hra</b> — jednodenní týmový závod po České republice.
+    Tým je posádka jednoho auta, nejvýš 5 lidí (aspoň jeden starší 18 let, doporučené minimum 3).
+    Během soboty jezdíte mezi stanovišti, luštíte šifry a plníte nejroztodivnější úkoly,
+    které prověří vědomosti, fyzičku, vybavení auta a hlavně improvizaci.</p>
+    <p>Šifry vezete s sebou v <b>zapečetěných obálkách</b> a na stanovišti otevíráte tu správnou podle fotky
+    s detailem místa. <b>Řešením každé šifry je heslo — české podstatné jméno v 1. pádě jednotného čísla.</b>
+    Heslo se zadává do systému, který prozradí polohu dalších stanovišť. Stanovišť v terénu je celkem 9, plus start a cíl.
+    Týmy si nesmějí navzájem pomáhat a je zakázáno „vést se" za jiným týmem.</p>
+
+    <h2>Letošní ročník — XXVII</h2>
+    <div class="fact"><b>Kdy</b><span>3.–4. října (předstartovní program v pátek, závod v sobotu)</span></div>
+    <div class="fact"><b>Téma</b><span>kouzelnická škola — hraje se „o školní pohár", pravidla vyšla jako Školní řád</span></div>
+    <div class="fact"><b>Kapacita</b><span>57 týmů</span></div>
+    <div class="fact"><b>Startovné</b><span>2 000 Kč za tým (+ ubytování s polopenzí 2 200 Kč/os. na 2 noci)</span></div>
+
+    <h2>Odkazy</h2>
+    <ul>
+      <li><a href="https://27.lhotatrophy.net/" rel="noopener">27.lhotatrophy.net</a> — web letošního ročníku, přihlášky a Školní řád</li>
+      <li><a href="https://22.lhotatrophy.net/sifry.pdf" rel="noopener">Šifry a výsledky XXII. ročníku (PDF)</a> — reálné šifry z minula, ideální ostrý trénink</li>
+      <li><a href="https://lhotatrophy17.technicka-prestavka.cz/?l=sifry" rel="noopener">Šifry Lhota Trophy XVII</a> — starší archiv</li>
+      <li><a href="https://sifrovacky.cz/jak-hrat/principy-sifer/" rel="noopener">Principy šifer na sifrovacky.cz</a> — obecná teorie šifrovacích her</li>
+    </ul>
+
+    <h2>Jak trénovat s touhle aplikací</h2>
+    <p>Patnáct stanovišť je seřazených od nejlehčích po nejtěžší a <b>u žádného není napsáno, jak na něj</b> —
+    stejně jako na závodě. Když se zasekneš, otevři Tahák, nebo si postupně odemkni nápovědy
+    (první tě jen popostrčí, druhá prozradí princip, třetí ukáže celý postup).
+    Za vyluštění bez nápovědy jsou tři hvězdy. Postup se ukládá v telefonu.</p>
+  </section>
+</main>
+
+<nav class="tabs" aria-label="Sekce">
+  <button id="nav-trenink" aria-selected="true">Trénink</button>
+  <button id="nav-tahak" aria-selected="false">Tahák</button>
+  <button id="nav-ohre" aria-selected="false">O hře</button>
+</nav>
+
+<script>
+"use strict";
+
+/* ══════════════ data šifer ══════════════ */
+
+const ETAPY = [
+  {
+    name: "Rozjezd",
+    sub: "šifry na rozehřátí",
+    puzzles: [
+      {
+        id: "s1", title: "Vzkaz pod stěračem",
+        flavor: "Na parkovišti před startem vám někdo nechal za stěračem lísteček. Písmo je úhledné, ale něco s ním není v pořádku.",
+        plate: `OLSEH EJ ATOBOS`,
+        answers: ["SOBOTA"],
+        h1: "Přečti si to nahlas. Nezní ti to povědomě… odněkud zezadu?",
+        h2: "Celý text je napsaný pozpátku. Přečti ho od posledního písmene k prvnímu. <a data-theory='skryte'>Tahák: Skrytá slova</a>",
+        sol: "Text čtený odzadu dává <b>SOBOTA JE HESLO</b>. Heslem je <b>SOBOTA</b>."
+      },
+      {
+        id: "s2", title: "Nákupní seznam",
+        flavor: "Na sedadle spolujezdce zůstal ležet nákupní seznam. Jenže kdo proboha nakupuje zrovna tohle?",
+        plateHTML: `<ul><li>Lilek</li><li>Ananas</li><li>Mrkev</li><li>Paprika</li><li>Avokádo</li></ul>`,
+        answers: ["LAMPA"],
+        h1: "Důležité nebude, co se má koupit. Podívej se, čím každá položka začíná.",
+        h2: "Vezmi první písmeno každé položky seznamu, odshora dolů. <a data-theory='skryte'>Tahák: Skrytá slova</a>",
+        sol: "První písmena položek: <b>L</b>ilek, <b>A</b>nanas, <b>M</b>rkev, <b>P</b>aprika, <b>A</b>vokádo → heslo <b>LAMPA</b>."
+      },
+      {
+        id: "s3", title: "Kilometrovník",
+        flavor: "U silnice stojí kilometrovník a někdo na něj křídou připsal čtyři čísla.",
+        plate: `11 · 15 · 12 · 15`,
+        big: true,
+        answers: ["KOLO"],
+        h1: "Všechna čísla jsou menší než 27. Kolik písmen má abeceda bez háčků a čárek?",
+        h2: "Každé číslo je pořadí písmene v abecedě: A=1, B=2 … Z=26. <a data-theory='cisla'>Tahák: Čísla místo písmen</a>",
+        sol: "11=<b>K</b>, 15=<b>O</b>, 12=<b>L</b>, 15=<b>O</b> → heslo <b>KOLO</b>."
+      },
+    ]
+  },
+  {
+    name: "Tajné abecedy",
+    sub: "klasika, bez které se neobejdeš",
+    puzzles: [
+      {
+        id: "s4", title: "Vysílačka",
+        flavor: "Z vysílačky ve dveřích auta se ozývá pravidelné pípání. Krátké a dlouhé tóny, pořád dokola. Zapsali jste je:",
+        plate: `···· &nbsp;···− &nbsp;· &nbsp;−−·· &nbsp;−·· &nbsp;·−`,
+        answers: ["HVEZDA"],
+        h1: "Krátké a dlouhé. Tečky a čárky. Tohle je nejslavnější kód na světě.",
+        h2: "Je to Morseova abeceda — každá skupina teček a čárek je jedno písmeno. <a data-theory='morse'>Tahák: Morseovka</a>",
+        sol: "···· = <b>H</b>, ···− = <b>V</b>, · = <b>E</b>, −−·· = <b>Z</b>, −·· = <b>D</b>, ·− = <b>A</b> → heslo <b>HVĚZDA</b>."
+      },
+      {
+        id: "s5", title: "Hrbolky na dveřích",
+        flavor: "Na dveřích hospody je mosazná cedulka. Žádný nápis — jen vyražené hrbolky, které jdou přečíst prsty.",
+        plate: `⠃ ⠕ ⠞ ⠁`,
+        big: true,
+        answers: ["BOTA"],
+        h1: "Písmo, které se čte po hmatě. Každý znak je mřížka 2×3 teček.",
+        h2: "Je to Braillovo písmo. Každý znak porovnej s tabulkou. <a data-theory='braille'>Tahák: Braillovo písmo</a>",
+        sol: "⠃ = <b>B</b>, ⠕ = <b>O</b>, ⠞ = <b>T</b>, ⠁ = <b>A</b> → heslo <b>BOTA</b>."
+      },
+      {
+        id: "s6", title: "Panáček s praporky",
+        flavor: "Na návsi stojí panáček a mává dvěma praporky. Vždycky zaujme pozici, chvíli vydrží a pak ruce přemístí. Zapsali jste směry paží:",
+        plate: `↙→ &nbsp; ↓↙ &nbsp; ←↑ &nbsp; ↓↙`,
+        big: true,
+        answers: ["MAPA"],
+        h1: "Dvě paže, osm možných směrů. Námořníci to používali mezi loděmi.",
+        h2: "Je to vlajková semaforová abeceda — každá dvojice směrů paží je písmeno. <a data-theory='semafor'>Tahák: Semafor</a>",
+        sol: "↙→ = <b>M</b>, ↓↙ = <b>A</b>, ←↑ = <b>P</b>, ↓↙ = <b>A</b> → heslo <b>MAPA</b>."
+      },
+      {
+        id: "s7", title: "Lístek v obálce",
+        flavor: "V obálce je jen malý lístek se čtyřmi dvojcifernými čísly. Ale žádné z nich není větší než 55…",
+        plate: `34 · 25 · 33 · 34`,
+        big: true,
+        answers: ["OKNO"],
+        h1: "Každé číslo má dvě cifry a žádná cifra není větší než 5. Nejsou to čísla — jsou to souřadnice.",
+        h2: "Polybiův čtverec: abeceda ve mřížce 5×5 (I a J sdílí políčko), první cifra je řádek, druhá sloupec. <a data-theory='polybius'>Tahák: Polybiův čtverec</a>",
+        sol: "V mřížce 5×5: 34 = řádek 3, sloupec 4 = <b>O</b>; 25 = <b>K</b>; 33 = <b>N</b>; 34 = <b>O</b> → heslo <b>OKNO</b>."
+      },
+    ]
+  },
+  {
+    name: "Posunuté a převrácené",
+    sub: "když text vypadá jako slovo, ale není",
+    puzzles: [
+      {
+        id: "s8", title: "Depeše z paluby",
+        flavor: "Radista zachytil depeši. Vypadá skoro jako slovo — jako by se každé písmeno na cestě éterem trochu posunulo.",
+        plate: `MFUBEMP`,
+        big: true,
+        answers: ["LETADLO"],
+        h1: "Zkus místo každého písmene vzít jeho souseda v abecedě. Kterým směrem?",
+        h2: "Posunutá abeceda (Caesarova šifra): každé písmeno posuň o 1 zpátky (M→L, F→E…). <a data-theory='caesar'>Tahák: Posunutá abeceda</a>",
+        sol: "Posun o 1 zpět: M→<b>L</b>, F→<b>E</b>, U→<b>T</b>, B→<b>A</b>, E→<b>D</b>, M→<b>L</b>, P→<b>O</b> → heslo <b>LETADLO</b>."
+      },
+      {
+        id: "s9", title: "Svět naruby",
+        flavor: "Na zrcátku visí cedulka se čtyřmi písmeny. Posun tady nefunguje, ať zkoušíte jakýkoli. Jako by byl celý svět obráceně.",
+        plate: `IBYZ`,
+        big: true,
+        answers: ["RYBA"],
+        h1: "A co když se abeceda nečte odpředu, ale zezadu? A je Z, B je Y…",
+        h2: "Obrácená abeceda (Atbash): A↔Z, B↔Y, C↔X… Každé písmeno nahraď jeho protějškem. <a data-theory='atbash'>Tahák: Obrácená abeceda</a>",
+        sol: "I↔<b>R</b>, B↔<b>Y</b>, Y↔<b>B</b>, Z↔<b>A</b> → heslo <b>RYBA</b>."
+      },
+      {
+        id: "s10", title: "Nuly a jedničky",
+        flavor: "Na monitoru palubního počítače blikají čtyři pětice číslic:",
+        plate: `10110 &nbsp;01111 &nbsp;00100 &nbsp;00001`,
+        answers: ["VODA"],
+        h1: "Pětice nul a jedniček. Převeď je na obyčejná čísla — dvojková soustava.",
+        h2: "Každá pětice je číslo v binárce (10110 = 16+4+2 = 22) a číslo je pořadí písmene v abecedě. <a data-theory='binar'>Tahák: Binární čísla</a>",
+        sol: "10110=22=<b>V</b>, 01111=15=<b>O</b>, 00100=4=<b>D</b>, 00001=1=<b>A</b> → heslo <b>VODA</b>."
+      },
+      {
+        id: "s11", title: "Stará Nokia",
+        flavor: "V přihrádce spolujezdce leží stařičká Nokia. Na displeji rozepsaná SMS, kterou nikdo nedopsal:",
+        plate: `6 &nbsp;2 &nbsp;7777 &nbsp;666`,
+        big: true,
+        answers: ["MASO"],
+        h1: "Vzpomeň si (nebo se zeptej rodičů), jak se na tlačítkovém telefonu psaly SMS.",
+        h2: "Klávesnice telefonu: 2=ABC, 3=DEF… Číslice stisknutá vícekrát = další písmeno na klávese. <a data-theory='telefon'>Tahák: Klávesnice telefonu</a>",
+        sol: "6 = <b>M</b>, 2 = <b>A</b>, 7777 = <b>S</b> (čtvrté písmeno na sedmičce), 666 = <b>O</b> → heslo <b>MASO</b>."
+      },
+    ]
+  },
+  {
+    name: "Královská etapa",
+    sub: "tady se rozhoduje o poháru",
+    puzzles: [
+      {
+        id: "s12", title: "Zaklínadlo",
+        flavor: "Ve staré učebnici kouzel je zatržené jedno zaklínadlo. Prý funguje, jen když ho vyslovíte ob písmeno.",
+        plate: `KOLBAUDRIPVEO`,
+        big: true,
+        answers: ["KLADIVO"],
+        h1: "„Ob písmeno“ — to není jen básnický obrat. Ber to doslova.",
+        h2: "Čti každé druhé písmeno: první, třetí, pátou pozici… <a data-theory='skryte'>Tahák: Skrytá slova</a>",
+        sol: "Písmena na lichých pozicích: <b>K</b>o<b>L</b>b<b>A</b>u<b>D</b>r<b>I</b>p<b>V</b>e<b>O</b> → heslo <b>KLADIVO</b>."
+      },
+      {
+        id: "s13", title: "Rozsypaný nápis",
+        flavor: "Nápis na zdi školní jídelny někdo rozsekal a poskládal špatně. Dvanáct písmen ve čtyřech trojicích:",
+        plate: `HOB &nbsp;EJL &nbsp;SEA &nbsp;LOK`,
+        answers: ["OBLAK"],
+        h1: "12 písmen… to je krásná tabulka. Třeba 3 řádky × 4 sloupce. Zkus je do ní napsat.",
+        h2: "Transpozice: zapiš trojice pod sebe jako sloupce (4 sloupce po 3 písmenech) a čti po řádcích. <a data-theory='mrizka'>Tahák: Mřížky a přesmyčky</a>",
+        sol: "Sloupce HOB · EJL · SEA · LOK zapsané vedle sebe dají řádky <b>HESL</b> / <b>OJEO</b> / <b>BLAK</b>, tedy „HESLO JE OBLAK“ → heslo <b>OBLAK</b>."
+      },
+      {
+        id: "s14", title: "Klíč máš u sebe",
+        flavor: "Poslední obálka před cílem. Uvnitř jen šest písmen a vzkaz: „Klíč znáš celou dobu — jezdíš na ni každý rok.“",
+        plate: `AVYEAO`,
+        big: true,
+        answers: ["POKLAD"],
+        h1: "Tohle není obyčejný posun — každé písmeno je posunuté jinak. Posuny určuje klíčové slovo. Kam se jezdí každý rok?",
+        h2: "Vigenèrova šifra s klíčem <b>LHOTA</b>. Pod text napiš opakovaně LHOTAL… a od každého písmene odečti písmeno klíče. <a data-theory='vigenere'>Tahák: Vigenèrova šifra</a>",
+        sol: "Klíč LHOTAL: A−L=<b>P</b>, V−H=<b>O</b>, Y−O=<b>K</b>, E−T=<b>L</b>, A−A=<b>A</b>, O−L=<b>D</b> → heslo <b>POKLAD</b>. (Odečítá se pořadí v abecedě, pod A se pokračuje od Z.)"
+      },
+      {
+        id: "s15", title: "Zrcadlo pravdy",
+        flavor: "V ředitelně visí staré zrcadlo a pod ním mosazný štítek se čtyřmi čísly. První pokus o rozluštění vám dá nesmysl — ale zrcadlo pravdu ukáže.",
+        plate: `19 · 9 · 26 · 23`,
+        big: true,
+        answers: ["HRAD"],
+        h1: "Čísla na písmena už převádět umíš (A=1…). Vyjde ti SIZW — a to není konec. Co s tím udělá zrcadlo?",
+        h2: "Dvě šifry za sebou: nejdřív čísla → písmena (A=1), pak výsledek prožeň obrácenou abecedou (A↔Z). <a data-theory='atbash'>Tahák: Obrácená abeceda</a>",
+        sol: "19=S, 9=I, 26=Z, 23=W → <b>SIZW</b>. To je nesmysl, tak do zrcadla abecedy: S↔<b>H</b>, I↔<b>R</b>, Z↔<b>A</b>, W↔<b>D</b> → heslo <b>HRAD</b>. Na Lhotě je zřetězení dvou principů běžné!"
+      },
+    ]
+  },
+];
+
+/* ══════════════ tahák ══════════════ */
+
+const AZ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const MORSE = {A:"·−",B:"−···",C:"−·−·",D:"−··",E:"·",F:"··−·",G:"−−·",H:"····",I:"··",J:"·−−−",K:"−·−",L:"·−··",M:"−−",N:"−·",O:"−−−",P:"·−−·",Q:"−−·−",R:"·−·",S:"···",T:"−",U:"··−",V:"···−",W:"·−−",X:"−··−",Y:"−·−−",Z:"−−··"};
+const BRAILLE = {A:"⠁",B:"⠃",C:"⠉",D:"⠙",E:"⠑",F:"⠋",G:"⠛",H:"⠓",I:"⠊",J:"⠚",K:"⠅",L:"⠇",M:"⠍",N:"⠝",O:"⠕",P:"⠏",Q:"⠟",R:"⠗",S:"⠎",T:"⠞",U:"⠥",V:"⠧",W:"⠺",X:"⠭",Y:"⠽",Z:"⠵"};
+const SEMAFOR = {A:"↓↙",B:"↓←",C:"↓↖",D:"↓↑",E:"↓↗",F:"↓→",G:"↓↘",H:"↙←",I:"↙↖",J:"↑→",K:"↙↑",L:"↙↗",M:"↙→",N:"↙↘",O:"←↖",P:"←↑",Q:"←↗",R:"←→",S:"←↘",T:"↖↑",U:"↖↗",V:"↑↘",W:"↗→",X:"↗↘",Y:"↖→",Z:"→↘"};
+const KEYPAD = [["2","ABC"],["3","DEF"],["4","GHI"],["5","JKL"],["6","MNO"],["7","PQRS"],["8","TUV"],["9","WXYZ"]];
+
+function abcGrid(fn) {
+  let h = '<div class="grid-abc">';
+  for (const ch of AZ) h += `<div><b>${ch}</b> ${fn(ch)}</div>`;
+  return h + '</div>';
+}
+
+const THEORY = [
+  {
+    id: "zlata", tag: "Start", title: "Zlatá pravidla: co zkusit, když nevíš",
+    body: `<p>Na Lhotě není u šifry nikdy napsáno, jak na ni. Projdi si tenhle kontrolní seznam — v tomhle pořadí odhalí většinu šifer:</p>
+    <ol class="checklist">
+      <li><b>Spočítej to.</b> Kolik je znaků, skupin, řádků? Číslo 26 (písmena), 5 (Polybius, binár) nebo dělitelnost (mřížka 3×4) napoví princip.</li>
+      <li><b>Čísla 1–26?</b> Skoro jistě pořadí písmen v abecedě (A=1).</li>
+      <li><b>Dvojice cifer 1–5?</b> Polybiův čtverec (řádek + sloupec).</li>
+      <li><b>Tečky a čárky, krátké/dlouhé, dvě různé věci?</b> Morseovka. Nuly a jedničky po pěti? Binár.</li>
+      <li><b>Vypadá to jako slovo, ale není?</b> Zkus posun abecedy (±1, ±3, ROT13…) a obrácenou abecedu (A↔Z).</li>
+      <li><b>Smysluplný text, který nedává smysl jako celek?</b> Čti první písmena slov/řádků, každé druhé či třetí písmeno, nebo text pozpátku.</li>
+      <li><b>Počet písmen jde hezky do tabulky?</b> Zkus text zapsat do mřížky a číst jiným směrem (po sloupcích, hadem, po úhlopříčkách).</li>
+      <li><b>Vyšel ti nesmysl?</b> Nezahazuj ho! Často je to jen mezikrok — prožeň ho druhou šifrou (typicky posun nebo A↔Z).</li>
+      <li><b>Heslo je vždy</b> české podstatné jméno v 1. pádě jednotného čísla. Když vyjde „skoro slovo", zkontroluj si postup — např. háčky a čárky se v šifrách obvykle zahazují (HVEZDA = HVĚZDA).</li>
+    </ol>`
+  },
+  {
+    id: "cisla", tag: "Základ", title: "Čísla místo písmen (A=1)",
+    body: `<p>Nejčastější převod vůbec: každé písmeno má pořadí v abecedě bez diakritiky, A=1 až Z=26. Pozor — některé hry počítají i CH (mezi H a I), pak je Z=27. Když ti vyjde nesmysl, zkus to s CH i bez.</p>` +
+      abcGrid(ch => AZ.indexOf(ch) + 1)
+  },
+  {
+    id: "morse", tag: "Základ", title: "Morseovka",
+    body: `<p>Písmena jako skupiny teček (krátké) a čárek (dlouhé). Skupiny se oddělují mezerou nebo lomítkem. Morseovka se schovává do čehokoli, co má dvě podoby: krátké/dlouhé tóny, malá/velká písmena, tečky a čárky ve větě, knoflíky dvou barev…</p>` +
+      abcGrid(ch => MORSE[ch])
+  },
+  {
+    id: "braille", tag: "Základ", title: "Braillovo písmo",
+    body: `<p>Slepecké písmo: mřížka 2×3 teček, čte se po sloupcích — vlevo shora body 1·2·3, vpravo shora 4·5·6. Prvních deset písmen (A–J) používá jen horní čtyři body, K–T k nim přidává bod 3, U–Z bod 3+6 (W je výjimka).</p>` +
+      abcGrid(ch => BRAILLE[ch])
+  },
+  {
+    id: "semafor", tag: "Základ", title: "Semafor (vlajková abeceda)",
+    body: `<p>Dvě paže (praporky) v osmi směrech; dvojice směrů = písmeno. V šifrách se objevuje jako panáčci, hodinové ručičky, dvojice šipek nebo čar. Směry čti z pohledu pozorovatele.</p>` +
+      abcGrid(ch => SEMAFOR[ch])
+  },
+  {
+    id: "polybius", tag: "Základ", title: "Polybiův čtverec",
+    body: `<p>Abeceda v mřížce 5×5 (I a J sdílejí políčko). Písmeno = dvojice cifer: <b>řádek, sloupec</b>. Poznávací znamení: samé dvojice cifer 1–5. Pozor, někdy se čte v pořadí sloupec–řádek.</p>
+    <div class="scrollx"><table class="ref">
+      <tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+      <tr><th>1</th><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td></tr>
+      <tr><th>2</th><td>F</td><td>G</td><td>H</td><td>I/J</td><td>K</td></tr>
+      <tr><th>3</th><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td></tr>
+      <tr><th>4</th><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td></tr>
+      <tr><th>5</th><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td></tr>
+    </table></div>`
+  },
+  {
+    id: "binar", tag: "Základ", title: "Binární čísla",
+    body: `<p>Pětice nul a jedniček stačí na čísla 1–26 → písmena (A=1). Hodnoty pozic zleva: 16, 8, 4, 2, 1. Např. 10110 = 16+4+2 = 22 = V. Binárka se maskuje jako cokoliv se dvěma stavy: plné/prázdné, černé/bílé, velké/malé.</p>` +
+      abcGrid(ch => (AZ.indexOf(ch) + 1).toString(2).padStart(5, "0"))
+  },
+  {
+    id: "telefon", tag: "Základ", title: "Klávesnice telefonu",
+    body: `<p>Psaní SMS na tlačítkovém telefonu: číslice = klávesa, počet stisků = pořadí písmene na klávese (7777 = S). Jiná varianta zápisu: dvojice „klávesa-pořadí", třeba 73 = R.</p>
+    <div class="scrollx"><table class="ref">
+      <tr>${KEYPAD.map(k => `<th>${k[0]}</th>`).join("")}</tr>
+      <tr>${KEYPAD.map(k => `<td>${k[1].split("").join(" ")}</td>`).join("")}</tr>
+    </table></div>`
+  },
+  {
+    id: "caesar", tag: "Posuny", title: "Posunutá abeceda (Caesar)",
+    body: `<p>Celá abeceda posunutá o stejný počet míst; za Z se pokračuje od A. Posun o 3: A→D, B→E… Posun o 13 (ROT13) je sám sobě inverzí. Když text vypadá „skoro jako slovo", zkoušej posuny ±1, ±2, ±3 a ROT13 — nebo si napiš abecedu dvakrát pod sebe a posouvej.</p>
+    <p class="mono" style="overflow-x:auto">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>DEFGHIJKLMNOPQRSTUVWXYZABC &nbsp;(posun +3)</p>`
+  },
+  {
+    id: "atbash", tag: "Posuny", title: "Obrácená abeceda (Atbash)",
+    body: `<p>Abeceda zrcadlově: A↔Z, B↔Y, C↔X… Šifra je svá vlastní inverze — stejný postup šifruje i dešifruje. V zadáních ji prozrazují motivy zrcadla, „světa naruby“ apod.</p>` +
+      abcGrid(ch => AZ[25 - AZ.indexOf(ch)])
+  },
+  {
+    id: "vigenere", tag: "Těžší", title: "Vigenèrova šifra",
+    body: `<p>Posunutá abeceda, kde se velikost posunu mění podle <b>klíčového slova</b>. Klíč se opakuje pod textem a každé písmeno klíče říká posun (A=0, B=1 … L=11…).</p>
+    <p><b>Dešifrování:</b> počítej s A=0, B=1 … Z=25. Od čísla písmene šifry odečti číslo písmene klíče; vyjde-li záporné číslo, přičti 26:</p>
+    <p class="mono" style="overflow-x:auto">šifra: A(0)&nbsp; V(21) Y(24) E(4)&nbsp; A(0) O(14)<br>klíč:&nbsp; L(11) H(7)&nbsp; O(14) T(19) A(0) L(11)<br>text:&nbsp; P(15) O(14) K(10) L(11) A(0) D(3)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0−11+26=15 &nbsp;·&nbsp; 21−7=14 &nbsp;·&nbsp; atd.</p>
+    <p>Klíč bývá schovaný v zadání — název hry, nápis na fotce, téma ročníku.</p>`
+  },
+  {
+    id: "mrizka", tag: "Těžší", title: "Mřížky a přesmyčky (transpozice)",
+    body: `<p>Písmena zprávy nejsou nahrazená, jen <b>přeházená</b>. Poznávací znamení: četnost písmen vypadá jako čeština (hodně E, A, O), ale slova nedávají smysl.</p>
+    <ol class="checklist">
+      <li>Spočítej písmena a najdi rozměry mřížky (12 = 3×4 nebo 4×3 nebo 2×6).</li>
+      <li>Zapiš text do mřížky po sloupcích a čti po řádcích (nebo obráceně).</li>
+      <li>Nefunguje-li to, zkus číst hadem (střídavě tam a zpět), po úhlopříčkách nebo spirálou.</li>
+    </ol>`
+  },
+  {
+    id: "skryte", tag: "Těžší", title: "Skrytá slova",
+    body: `<p>Zpráva je schovaná v nevinně vypadajícím textu:</p>
+    <ol class="checklist">
+      <li><b>První písmena</b> slov, řádků nebo položek seznamu (akrostich).</li>
+      <li><b>Každé n-té písmeno</b> — druhé, třetí… i s posunutým začátkem.</li>
+      <li><b>Text pozpátku</b>, čtení po slabikách odzadu.</li>
+      <li><b>Délky slov</b> jako čísla (třeba morseovka: krátké slovo = tečka, dlouhé = čárka).</li>
+      <li>Něco v textu <b>vybočuje</b> (velká písmena, kurzíva, překlepy) — vyber jen to.</li>
+    </ol>
+    <p>A zlaté pravidlo Lhoty: když mezivýsledek nedává smysl, je to nejspíš vstup do další šifry.</p>`
+  },
+];
+
+/* ══════════════ stav ══════════════ */
+
+const KEY = "lhota-pripravka-v1";
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+function pstate(id) { return state[id] || (state[id] = { solved: false, hints: 0, revealed: false }); }
+function starsFor(id) {
+  const s = pstate(id);
+  if (!s.solved) return 0;
+  if (s.revealed) return 0;
+  return Math.max(1, 3 - s.hints);
+}
+
+const ALL = ETAPY.flatMap(e => e.puzzles);
+function totals() {
+  const solved = ALL.filter(p => pstate(p.id).solved).length;
+  const stars = ALL.reduce((a, p) => a + starsFor(p.id), 0);
+  return { solved, stars };
+}
+
+/* ══════════════ vykreslení ══════════════ */
+
+const $ = sel => document.querySelector(sel);
+function norm(s) {
+  return s.trim().toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "");
+}
+
+function renderHeader() {
+  const t = totals();
+  $("#scoreTop").textContent = `${t.solved}/15 · ${"★"}${t.stars}`;
+}
+
+function renderList() {
+  let h = "";
+  let n = 0;
+  ETAPY.forEach((et, ei) => {
+    h += `<div class="etapa-head"><span class="eno">Etapa ${ei + 1}</span><h2>${et.name}</h2><span class="esub">${et.sub}</span></div>`;
+    et.puzzles.forEach(p => {
+      n++;
+      const s = pstate(p.id);
+      const st = starsFor(p.id);
+      const starsHtml = s.solved
+        ? `<span class="stars">${"★".repeat(st)}<span class="off">${"★".repeat(3 - st)}</span></span>`
+        : `<span class="stars off">·&nbsp;·&nbsp;·</span>`;
+      h += `<button class="station ${s.solved ? "done" : ""}" data-open="${p.id}">
+        <span class="num">${String(n).padStart(2, "0")}</span>
+        <span class="t"><b>${p.title}</b><span>${s.solved ? "vyluštěno" : "nevyluštěno"}</span></span>
+        ${starsHtml}
+      </button>`;
+    });
+  });
+  $("#stationList").innerHTML = h;
+}
+
+function renderPuzzle(id) {
+  const idx = ALL.findIndex(p => p.id === id);
+  const p = ALL[idx];
+  const s = pstate(id);
+  const plate = p.plateHTML
+    ? `<div class="plate"><small>zadání</small>${p.plateHTML}</div>`
+    : `<div class="plate ${p.big ? "big" : ""}"><small>zadání</small>${p.plate}</div>`;
+
+  const hintBlock = (n, label, content, unlocked) => `
+    <div class="hint">
+      <div class="h-label">${label}</div>
+      ${unlocked
+        ? `<div class="h-body">${content}</div>`
+        : `<button class="reveal" data-hint="${n}">Odemknout ${n < 3 ? "(−1 ★)" : "(0 ★)"}</button>`}
+    </div>`;
+
+  $("#puzzleView").innerHTML = `
+    <div class="backrow"><button data-back>← Všechna stanoviště</button></div>
+    <h2 class="p-head">${p.title}</h2>
+    <p class="p-sub">Stanoviště ${idx + 1} z 15 · heslo je podstatné jméno v 1. pádě</p>
+    <p class="flavor">${p.flavor}</p>
+    ${plate}
+    ${s.solved
+      ? `<div class="solvedbox">✓ Vyluštěno — heslo <b>${p.answers[0]}</b> ${starsFor(id) ? "· " + "★".repeat(starsFor(id)) : ""}</div>`
+      : `<form class="answer" data-form>
+           <input type="text" autocomplete="off" autocapitalize="characters" spellcheck="false"
+                  placeholder="HESLO" aria-label="Heslo">
+           <button type="submit">Ověřit</button>
+         </form>
+         <div class="verdict" data-verdict></div>`}
+    <div class="hints">
+      ${hintBlock(1, "Nápověda 1 · popostrčení", p.h1, s.hints >= 1)}
+      ${hintBlock(2, "Nápověda 2 · princip", p.h2, s.hints >= 2)}
+      ${hintBlock(3, "Řešení · celý postup", p.sol, s.revealed)}
+    </div>
+    ${idx < ALL.length - 1 && s.solved ? `<button class="station" data-open="${ALL[idx + 1].id}"><span class="num">→</span><span class="t"><b>Další stanoviště</b><span>${ALL[idx + 1].title}</span></span></button>` : ""}
+  `;
+
+  const form = $("#puzzleView [data-form]");
+  if (form) {
+    form.addEventListener("submit", ev => {
+      ev.preventDefault();
+      const val = norm(form.querySelector("input").value);
+      const v = $("#puzzleView [data-verdict]");
+      if (!val) return;
+      if (p.answers.map(norm).includes(val)) {
+        s.solved = true;
+        save();
+        renderHeader(); renderList(); renderPuzzle(id);
+      } else {
+        v.textContent = "Tohle heslo systém nezná. Zkus to znovu — nebo si odemkni nápovědu.";
+        v.className = "verdict ko";
+      }
+    });
+  }
+
+  document.querySelectorAll("#puzzleView [data-hint]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const n = +btn.dataset.hint;
+      if (btn.dataset.armed !== "1" ) {
+        btn.dataset.armed = "1";
+        btn.textContent = n === 3 ? "Opravdu zobrazit celé řešení?" : "Opravdu? Přijdeš o hvězdu…";
+        return;
+      }
+      if (n === 3) { s.revealed = true; s.hints = Math.max(s.hints, 2); }
+      else s.hints = Math.max(s.hints, n);
+      save();
+      renderHeader(); renderList(); renderPuzzle(id);
+    });
+  });
+
+  $("#puzzleView [data-back]").addEventListener("click", () => showList());
+  bindTheoryLinks("#puzzleView");
+  window.scrollTo(0, 0);
+}
+
+function showList() {
+  $("#puzzleView").classList.remove("active");
+  $("#stationList").style.display = "";
+  $("#resetRow").style.display = "";
+  renderList();
+  bindStations();
+}
+function showPuzzle(id) {
+  $("#stationList").style.display = "none";
+  $("#resetRow").style.display = "none";
+  $("#puzzleView").classList.add("active");
+  renderPuzzle(id);
+  bindStations();
+}
+function bindStations() {
+  document.querySelectorAll("[data-open]").forEach(el =>
+    el.addEventListener("click", () => showPuzzle(el.dataset.open)));
+}
+
+function renderTheory() {
+  $("#theoryList").innerHTML = THEORY.map(t => `
+    <details class="theory" id="theory-${t.id}">
+      <summary><span class="tag">${t.tag}</span>${t.title}</summary>
+      <div class="body">${t.body}</div>
+    </details>`).join("");
+}
+
+function bindTheoryLinks(scope) {
+  document.querySelectorAll(`${scope} a[data-theory]`).forEach(a => {
+    a.setAttribute("href", "#");
+    a.addEventListener("click", ev => {
+      ev.preventDefault();
+      switchTab("tahak");
+      const d = $(`#theory-${a.dataset.theory}`);
+      if (d) { d.open = true; d.scrollIntoView({ block: "start" }); }
+    });
+  });
+}
+
+/* ══════════════ záložky ══════════════ */
+
+const TABS = ["trenink", "tahak", "ohre"];
+function switchTab(name) {
+  TABS.forEach(t => {
+    $(`#tab-${t}`).classList.toggle("active", t === name);
+    $(`#nav-${t}`).setAttribute("aria-selected", String(t === name));
+  });
+  window.scrollTo(0, 0);
+}
+TABS.forEach(t => $(`#nav-${t}`).addEventListener("click", () => switchTab(t)));
+
+$("#resetBtn").addEventListener("click", () => {
+  if (confirm("Opravdu smazat veškerý postup?")) {
+    state = {}; save();
+    renderHeader(); showList();
+  }
+});
+
+/* ══════════════ start ══════════════ */
+renderHeader();
+renderTheory();
+showList();
+</script>
