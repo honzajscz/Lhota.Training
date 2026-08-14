@@ -275,9 +275,9 @@
 </style>
 
 <header class="app">
-  <span class="badge">LT XXVII</span>
+  <span class="badge">LHOTA</span>
   <h1>Lhotecká přípravka</h1>
-  <span class="score" id="scoreTop">0/15</span>
+  <span class="score" id="scoreTop">0/19</span>
 </header>
 
 <main>
@@ -293,7 +293,8 @@
   <!-- ═══════════ TAHÁK ═══════════ -->
   <section class="tab" id="tab-tahak">
     <p class="intro">Na Lhotě ti nikdo neřekne, jakou šifrou je zpráva zašifrovaná — poznat princip je půlka úlohy.
-    Tenhle tahák smíš používat i při tréninku: přesně tak to funguje na závodě, kde má tým s sebou vytištěné tabulky.</p>
+    Tenhle tahák smíš používat i při tréninku zdarma: přesně tak to funguje na závodě, kde má tým s sebou vytištěné tabulky.
+    Trestné kilometry stojí až vyžádané nápovědy.</p>
     <div id="theoryList"></div>
   </section>
 
@@ -301,33 +302,46 @@
   <section class="tab about" id="tab-ohre">
     <h2 style="margin-top:4px">Co je Lhota Trophy</h2>
     <p>Lhota Trophy je legendární <b>automobilová šifrovací hra</b> — jednodenní týmový závod po České republice.
-    Tým je posádka jednoho auta, nejvýš 5 lidí (aspoň jeden starší 18 let, doporučené minimum 3).
-    Během soboty jezdíte mezi stanovišti, luštíte šifry a plníte nejroztodivnější úkoly,
-    které prověří vědomosti, fyzičku, vybavení auta a hlavně improvizaci.</p>
-    <p>Šifry vezete s sebou v <b>zapečetěných obálkách</b> a na stanovišti otevíráte tu správnou podle fotky
-    s detailem místa. <b>Řešením každé šifry je heslo — české podstatné jméno v 1. pádě jednotného čísla.</b>
-    Heslo se zadává do systému, který prozradí polohu dalších stanovišť. Stanovišť v terénu je celkem 9, plus start a cíl.
-    Týmy si nesmějí navzájem pomáhat a je zakázáno „vést se" za jiným týmem.</p>
+    Tým je posádka jednoho motorového vozidla, nejvýš 5 lidí (aspoň jeden starší 18 let, který za neplnoleté zodpovídá).
+    Startuje se v sobotu v 6:00 <b>v obci jménem Lhota</b> (které — to se dozvíš až před startem) a hra končí v 19:30,
+    s možností penalizovaného prodloužení do 20:00.</p>
+    <p>Šifry vezete s sebou v <b>zapečetěných herních obálkách</b> — pozor, mezi nimi může být i diskvalifikační!
+    Otevíráte vždy jen tu, ke které vyzve vývěska na stanovišti. Vyluštěním šifry je <b>A-kód: smysluplné české slovo,
+    podstatné jméno v 1. pádě jednotného čísla</b> (i vlastní jméno). Šifry používají anglickou abecedu o 26 písmenech,
+    CH se počítá jako dvě písmena. Kód se zadává do systému, který prozradí polohu dalších stanovišť.
+    Stanovišť v terénu je 9 plus start a cíl; na každém je i úkol za <b>B-kód</b> a po trase se dají najít
+    bonusové <b>C-kódy</b>. Luštit pomocí AI je zakázáno.</p>
 
-    <h2>Letošní ročník — XXVII</h2>
-    <div class="fact"><b>Kdy</b><span>3.–4. října (předstartovní program v pátek, závod v sobotu)</span></div>
-    <div class="fact"><b>Téma</b><span>kouzelnická škola — hraje se „o školní pohár", pravidla vyšla jako Školní řád</span></div>
-    <div class="fact"><b>Kapacita</b><span>57 týmů</span></div>
-    <div class="fact"><b>Startovné</b><span>2 000 Kč za tým (+ ubytování s polopenzí 2 200 Kč/os. na 2 noci)</span></div>
+    <h2>Bodování (trestné kilometry)</h2>
+    <p>Vyhrává tým s <b>nejnižším součtem najetých a trestných kilometrů</b>. Přesně podle pravidel:</p>
+    <div class="fact"><b>−5 km</b><span>za každý nalezený bonusový C-kód</span></div>
+    <div class="fact"><b>+25 km</b><span>nápověda k šifře</span></div>
+    <div class="fact"><b>+15 km</b><span>postup k šifře (nelze vzít bez nápovědy — celkem 40 km)</span></div>
+    <div class="fact"><b>+10 km</b><span>řešení šifry (nelze vzít bez postupu — celkem 50 km)</span></div>
+    <div class="fact"><b>+75 km</b><span>nezadání A-kódu nebo B-kódu</span></div>
+    <div class="fact"><b>+50 km</b><span>vyžádání polohy cíle</span></div>
+    <div class="fact"><b>+2 km/min</b><span>pozdní dojezd (19:30–20:00)</span></div>
+    <p>Tenhle trénink počítá trestné kilometry stejně: nápověda 25, postup 15, řešení 10.
+    Cíl je projet všech 19 stanovišť s nulou.</p>
+
+    <h2>Ročníky</h2>
+    <p>XXVII. ročník („kouzelnická škola", pravidla jako Školní řád) se jel <b>4. října 2025</b> se startovným
+    2 000 Kč a kapacitou 57 týmů. Hra je putovní — vítěz získává čest a povinnost uspořádat další ročník,
+    takže <b>XXVIII. ročník vyjde na začátek října 2026</b>. Sleduj web a facebookovou skupinu Lhota Trophy.</p>
 
     <h2>Odkazy</h2>
     <ul>
-      <li><a href="https://27.lhotatrophy.net/" rel="noopener">27.lhotatrophy.net</a> — web letošního ročníku, přihlášky a Školní řád</li>
-      <li><a href="https://22.lhotatrophy.net/sifry.pdf" rel="noopener">Šifry a výsledky XXII. ročníku (PDF)</a> — reálné šifry z minula, ideální ostrý trénink</li>
+      <li><a href="https://27.lhotatrophy.net/" rel="noopener">27.lhotatrophy.net</a> — web posledního ročníku a Školní řád (pravidla)</li>
+      <li><a href="https://22.lhotatrophy.net/sifry.pdf" rel="noopener">Šifry a výsledky XXII. ročníku (PDF)</a> — reálné šifry i s řešeními; z nich vychází pátá etapa tréninku</li>
       <li><a href="https://lhotatrophy17.technicka-prestavka.cz/?l=sifry" rel="noopener">Šifry Lhota Trophy XVII</a> — starší archiv</li>
       <li><a href="https://sifrovacky.cz/jak-hrat/principy-sifer/" rel="noopener">Principy šifer na sifrovacky.cz</a> — obecná teorie šifrovacích her</li>
     </ul>
 
     <h2>Jak trénovat s touhle aplikací</h2>
-    <p>Patnáct stanovišť je seřazených od nejlehčích po nejtěžší a <b>u žádného není napsáno, jak na něj</b> —
-    stejně jako na závodě. Když se zasekneš, otevři Tahák, nebo si postupně odemkni nápovědy
-    (první tě jen popostrčí, druhá prozradí princip, třetí ukáže celý postup).
-    Za vyluštění bez nápovědy jsou tři hvězdy. Postup se ukládá v telefonu.</p>
+    <p>Devatenáct stanovišť je seřazených od nejlehčích po nejtěžší a <b>u žádného není napsáno, jak na něj</b> —
+    stejně jako na závodě. Pátá etapa kopíruje principy skutečných šifer ze XXII. ročníku.
+    Když se zasekneš, otevři Tahák, nebo si jako ve hře postupně vyžádej nápovědu → postup → řešení;
+    každé stojí trestné kilometry. Postup se ukládá v telefonu.</p>
   </section>
 </main>
 
@@ -512,6 +526,49 @@ const ETAPY = [
       },
     ]
   },
+  {
+    name: "Naostro — podle XXII. ročníku",
+    sub: "principy okopírované ze skutečných šifer",
+    puzzles: [
+      {
+        id: "s16", title: "Rozbitá mašina",
+        flavor: "V kabinetu stojí stará psací mašina. Něčí prsty na ní psaly heslo, jenže mašina je rozladěná — každá klávesa píše znak o jedno vedle.",
+        plate: `LPDZ`,
+        big: true,
+        answers: ["KOST"],
+        h1: "„O jedno vedle“ ber doslova. Představ si klávesnici (QWERTZ) a podívej se, co leží hned vedle každého písmene.",
+        h2: "Každé písmeno nahraď klávesou o jednu vlevo na české klávesnici QWERTZ. <a data-theory='klavesnice'>Tahák: Klávesnice a psací stroj</a>",
+        sol: "Na QWERTZ klávesnici je vlevo od L klávesa <b>K</b>, od P je <b>O</b>, od D je <b>S</b>, od Z je <b>T</b> → heslo <b>KOST</b>. Skutečná závěrečná šifra XXII. Lhoty (K1) fungovala na podobném principu posunu na klávesnici — organizátoři ji uvedli jako „šifru, na níž je založené kódování Enigmy“."
+      },
+      {
+        id: "s17", title: "Dva štítky z lomu",
+        flavor: "V opuštěném lomu visí dva plechové štítky, každý s pěti písmeny. Zvlášť nedávají smysl ani jeden. Možná potřebují jeden druhý.",
+        plateHTML: `<div style="letter-spacing:.15em">F B J<br>G D J</div>`,
+        answers: ["LES"],
+        h1: "Dva texty, stejná délka. Co kdybys je… sečetl? Písmeno + písmeno = písmeno.",
+        h2: "Sčítání písmen: každé písmeno má hodnotu A=0, B=1 … Z=25. Sečti dvojice pod sebou (přes 25 se pokračuje od nuly). <a data-theory='scitani'>Tahák: Sčítání písmen</a>",
+        sol: "F(5)+G(6)=11=<b>L</b>, B(1)+D(3)=4=<b>E</b>, J(9)+J(9)=18=<b>S</b> → heslo <b>LES</b>. Přesně takhle fungovala šifra B1 Lom na XXII. Lhotě: dva nesrozumitelné štítky, které po sečtení daly heslo VÁNEK."
+      },
+      {
+        id: "s18", title: "Písemka z dějepisu",
+        flavor: "Na lavici leží písemka. Žádné otázky — jen tři data a u každého malé číslo. Profesor dějepisu se záhadně usmívá.",
+        plateHTML: `<div style="font-size:18px;text-align:left;display:inline-block">28.&thinsp;10.&thinsp;1918&nbsp;&nbsp;→&nbsp;&nbsp;1.<br>6.&thinsp;7.&thinsp;1415&nbsp;&nbsp;→&nbsp;&nbsp;8.<br>2.&thinsp;12.&thinsp;1805&nbsp;&nbsp;→&nbsp;&nbsp;1.</div>`,
+        answers: ["PES"],
+        h1: "Každé datum je slavná událost českých dějin. A každá událost se někde stala…",
+        h2: "Vzpomeň si, KDE se událost stala, a z názvu místa vezmi písmeno na pozici udané číslem. <a data-theory='vedomostni'>Tahák: Vědomostní šifry</a>",
+        sol: "28. 10. 1918 = vznik Československa → <b>P</b>RAHA (1. písmeno). 6. 7. 1415 = upálení Jana Husa → KOSTNIC<b>E</b> (8. písmeno). 2. 12. 1805 = bitva tří císařů → <b>S</b>LAVKOV (1. písmeno) → heslo <b>PES</b>. Kopie principu šifry C2 Číselná z XXII. Lhoty — tam bylo dat osm a tajenku skládala tučná číslice v každém datu."
+      },
+      {
+        id: "s19", title: "Telegram",
+        flavor: "V cíli etapy na vás čeká telegram. Text je podivně useknutý a pošťák jen pokrčí rameny: „Doručuju, co mi nadiktovali.“",
+        plateHTML: `<div style="font-size:22px">JE TO DEN, UŽ, MÁVÁ NÁM</div>`,
+        answers: ["SEN"],
+        h1: "Obsah slov je nesmysl — důležité je, jak jsou dlouhá. Krátké a dlouhé… kde jsi to už viděl?",
+        h2: "Slova do 3 písmen = tečka, delší = čárka; čárky v textu oddělují písmena morseovky. <a data-theory='morse'>Tahák: Morseovka</a>",
+        sol: "JE(2) TO(2) DEN(3) = ··· = <b>S</b>; UŽ(2) = · = <b>E</b>; MÁVÁ(4) NÁM(3) = −· = <b>N</b> → heslo <b>SEN</b>. Schovávání morseovky do vlastností textu je na Lhotě klasika — na XXII. ročníku byla morseovka třeba v barvách na proužku papíru (šifra G2) nebo na provázcích v bazénu (J1)."
+      },
+    ]
+  },
 ];
 
 /* ══════════════ tahák ══════════════ */
@@ -541,7 +598,9 @@ const THEORY = [
       <li><b>Smysluplný text, který nedává smysl jako celek?</b> Čti první písmena slov/řádků, každé druhé či třetí písmeno, nebo text pozpátku.</li>
       <li><b>Počet písmen jde hezky do tabulky?</b> Zkus text zapsat do mřížky a číst jiným směrem (po sloupcích, hadem, po úhlopříčkách).</li>
       <li><b>Vyšel ti nesmysl?</b> Nezahazuj ho! Často je to jen mezikrok — prožeň ho druhou šifrou (typicky posun nebo A↔Z).</li>
-      <li><b>Heslo je vždy</b> české podstatné jméno v 1. pádě jednotného čísla. Když vyjde „skoro slovo", zkontroluj si postup — např. háčky a čárky se v šifrách obvykle zahazují (HVEZDA = HVĚZDA).</li>
+      <li><b>Heslo je vždy</b> české podstatné jméno v 1. pádě jednotného čísla (může být i vlastní jméno). Když vyjde „skoro slovo", zkontroluj si postup — háčky a čárky se zahazují (HVEZDA = HVĚZDA).</li>
+      <li><b>Dle oficiálních pravidel</b> šifry používají anglickou abecedu o 26 písmenech a <b>CH se počítá jako dvě písmena</b> (C+H). Starší ročníky ale občas počítaly česky s CH — když ti to o jedno nevychází, zkus obojí.</li>
+      <li>A pozor: na skutečné Lhotě je <b>cílené používání AI k luštění zakázáno</b>. Trénuj hlavu, ne chatbota. 😉</li>
     </ol>`
   },
   {
@@ -616,6 +675,37 @@ const THEORY = [
     </ol>`
   },
   {
+    id: "scitani", tag: "Těžší", title: "Sčítání písmen",
+    body: `<p>Dva nesrozumitelné texty stejné délky se <b>sečtou po písmenech</b>: každé písmeno má hodnotu (nejčastěji A=0, B=1 … Z=25, někdy A=1), dvojice se sečtou a přes konec abecedy se pokračuje od začátku (mod 26).</p>
+    <p class="mono">F(5) + G(6) = 11 = L</p>
+    <p>Poznávací znamení: dvě stejně dlouhé „hatmatilky", často na dvou místech (dva štítky, dva sloupce, dvě poloviny stanoviště). Na XXII. Lhotě takhle fungovala šifra B1 Lom. Když součet nevychází, zkus variantu A=1, odčítání, nebo abecedu s CH.</p>`
+  },
+  {
+    id: "klavesnice", tag: "Těžší", title: "Klávesnice a psací stroj",
+    body: `<p>Písmena se nahrazují podle <b>rozložení klávesnice</b>, ne podle abecedy: klávesa o jedno vedle (vlevo/vpravo), klávesa nad/pod, nebo číslo řádku a pozice. Závěrečná šifra XXII. Lhoty (K1) stála na podobném „enigmovém" posunu.</p>
+    <p class="mono" style="overflow-x:auto">Q W E R T Z U I O P<br>&nbsp;A S D F G H J K L<br>&nbsp;&nbsp;Y X C V B N M</p>
+    <p>Poznávací znamení: v šifře se objevují znaky, které v abecedě nedávají smysl (háčky, čárky, interpunkce — na české klávesnici sedí na číselném řádku), nebo je v zadání zmínka o psaní, stroji, klávesách. Příbuzný trik: telefonní klávesnice (viz výše).</p>`
+  },
+  {
+    id: "vedomostni", tag: "Těžší", title: "Vědomostní a asociační šifry",
+    body: `<p>Lhota miluje šifry, kde mezikrokem je <b>znalost</b>: historická data → místa událostí, úryvky her → roky uvedení, noty → jména, vlajky → státy. Z názvů se pak berou písmena na daných pozicích.</p>
+    <p>Druhý oblíbený trik: výsledkem luštění nejsou přímo písmena hesla, ale <b>tři slova, která heslo asociují</b> (na XXII. Lhotě vyšla slova SEDLO, ŠEMÍK, TRÓJA — heslo KŮŇ).</p>
+    <p>Co si vzít do auta: přehled českých dějin (letopočty!), Cimrmana, mapu ČR. A když vyjdou podivná slova, ptej se: „Co mají společného?"</p>`
+  },
+  {
+    id: "teren", tag: "Terén", title: "Co všechno už na Lhotě bylo",
+    body: `<p>Ne všechno se luští tužkou — počítej i s terénními a fyzickými šiframi. Reálné příklady ze XXII. ročníku:</p>
+    <ol class="checklist">
+      <li><b>Provázek na trubku</b> (G1): text se namotá na tyč a čte se po závitech — antická skytalé.</li>
+      <li><b>Chemie</b> (G2): proužek papíru se musel obarvit manganistanem, teprve pak vylezlo Braillovo písmo.</li>
+      <li><b>Braille → QR kód</b> (D2): písmena přepsaná do Braillu na čtverečkovaný papír vytvořila QR kód. Dvoustupňové šílenství.</li>
+      <li><b>Azimuty</b> (H1): postupuj po azimutech a vzdálenostech od vývěsky a sbírej písmenka.</li>
+      <li><b>Morseovka na provázcích</b> (J1), <b>plovák v trubce</b> (i1), <b>elektronická destička</b> (C1)…</li>
+      <li><b>Bonusové C-kódy</b>: schované kdekoli — ve videu, v trubce, v seznamu věcí, v prvních písmenech vývěsek všech stanovišť. Oči na stopkách celý den!</li>
+    </ol>
+    <p>Vybavení, které se minule hodilo: provázek, buzola, čtverečkovaný papír, nůžky, lepicí páska, baterka, lupa — a plná nádrž.</p>`
+  },
+  {
     id: "skryte", tag: "Těžší", title: "Skrytá slova",
     body: `<p>Zpráva je schovaná v nevinně vypadajícím textu:</p>
     <ol class="checklist">
@@ -636,18 +726,17 @@ let state = {};
 try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
 function pstate(id) { return state[id] || (state[id] = { solved: false, hints: 0, revealed: false }); }
-function starsFor(id) {
+/* penalizace jako ve skutečné hře: nápověda 25 km, postup +15 km, řešení +10 km */
+function kmFor(id) {
   const s = pstate(id);
-  if (!s.solved) return 0;
-  if (s.revealed) return 0;
-  return Math.max(1, 3 - s.hints);
+  return (s.hints >= 1 ? 25 : 0) + (s.hints >= 2 ? 15 : 0) + (s.revealed ? 10 : 0);
 }
 
 const ALL = ETAPY.flatMap(e => e.puzzles);
 function totals() {
   const solved = ALL.filter(p => pstate(p.id).solved).length;
-  const stars = ALL.reduce((a, p) => a + starsFor(p.id), 0);
-  return { solved, stars };
+  const km = ALL.reduce((a, p) => a + kmFor(p.id), 0);
+  return { solved, km };
 }
 
 /* ══════════════ vykreslení ══════════════ */
@@ -659,7 +748,7 @@ function norm(s) {
 
 function renderHeader() {
   const t = totals();
-  $("#scoreTop").textContent = `${t.solved}/15 · ${"★"}${t.stars}`;
+  $("#scoreTop").textContent = `${t.solved}/${ALL.length} · +${t.km} km`;
 }
 
 function renderList() {
@@ -670,14 +759,14 @@ function renderList() {
     et.puzzles.forEach(p => {
       n++;
       const s = pstate(p.id);
-      const st = starsFor(p.id);
-      const starsHtml = s.solved
-        ? `<span class="stars">${"★".repeat(st)}<span class="off">${"★".repeat(3 - st)}</span></span>`
-        : `<span class="stars off">·&nbsp;·&nbsp;·</span>`;
+      const km = kmFor(p.id);
+      const kmHtml = s.solved
+        ? `<span class="stars">${km === 0 ? "čistě ★" : "+" + km + " km"}</span>`
+        : (km > 0 ? `<span class="stars">+${km} km</span>` : `<span class="stars off">·&nbsp;·&nbsp;·</span>`);
       h += `<button class="station ${s.solved ? "done" : ""}" data-open="${p.id}">
         <span class="num">${String(n).padStart(2, "0")}</span>
         <span class="t"><b>${p.title}</b><span>${s.solved ? "vyluštěno" : "nevyluštěno"}</span></span>
-        ${starsHtml}
+        ${kmHtml}
       </button>`;
     });
   });
@@ -692,22 +781,23 @@ function renderPuzzle(id) {
     ? `<div class="plate"><small>zadání</small>${p.plateHTML}</div>`
     : `<div class="plate ${p.big ? "big" : ""}"><small>zadání</small>${p.plate}</div>`;
 
-  const hintBlock = (n, label, content, unlocked) => `
+  const hintBlock = (n, label, content, unlocked, kmCost) => `
     <div class="hint">
       <div class="h-label">${label}</div>
       ${unlocked
         ? `<div class="h-body">${content}</div>`
-        : `<button class="reveal" data-hint="${n}">Odemknout ${n < 3 ? "(−1 ★)" : "(0 ★)"}</button>`}
+        : `<button class="reveal" data-hint="${n}">Vyžádat (+${kmCost} trestných km)</button>`}
     </div>`;
 
+  const km = kmFor(id);
   $("#puzzleView").innerHTML = `
     <div class="backrow"><button data-back>← Všechna stanoviště</button></div>
     <h2 class="p-head">${p.title}</h2>
-    <p class="p-sub">Stanoviště ${idx + 1} z 15 · heslo je podstatné jméno v 1. pádě</p>
+    <p class="p-sub">Stanoviště ${idx + 1} z ${ALL.length} · heslo (A-kód) je podstatné jméno v 1. pádě</p>
     <p class="flavor">${p.flavor}</p>
     ${plate}
     ${s.solved
-      ? `<div class="solvedbox">✓ Vyluštěno — heslo <b>${p.answers[0]}</b> ${starsFor(id) ? "· " + "★".repeat(starsFor(id)) : ""}</div>`
+      ? `<div class="solvedbox">✓ Vyluštěno — heslo <b>${p.answers[0]}</b> · ${km === 0 ? "bez nápovědy, 0 trestných km ★" : "+" + km + " trestných km"}</div>`
       : `<form class="answer" data-form>
            <input type="text" autocomplete="off" autocapitalize="characters" spellcheck="false"
                   placeholder="HESLO" aria-label="Heslo">
@@ -715,9 +805,9 @@ function renderPuzzle(id) {
          </form>
          <div class="verdict" data-verdict></div>`}
     <div class="hints">
-      ${hintBlock(1, "Nápověda 1 · popostrčení", p.h1, s.hints >= 1)}
-      ${hintBlock(2, "Nápověda 2 · princip", p.h2, s.hints >= 2)}
-      ${hintBlock(3, "Řešení · celý postup", p.sol, s.revealed)}
+      ${hintBlock(1, "Nápověda · popostrčení", p.h1, s.hints >= 1, 25)}
+      ${hintBlock(2, "Postup · princip šifry", p.h2, s.hints >= 2, 15)}
+      ${hintBlock(3, "Řešení · celý postup", p.sol, s.revealed, 10)}
     </div>
     ${idx < ALL.length - 1 && s.solved ? `<button class="station" data-open="${ALL[idx + 1].id}"><span class="num">→</span><span class="t"><b>Další stanoviště</b><span>${ALL[idx + 1].title}</span></span></button>` : ""}
   `;
@@ -745,7 +835,9 @@ function renderPuzzle(id) {
       const n = +btn.dataset.hint;
       if (btn.dataset.armed !== "1" ) {
         btn.dataset.armed = "1";
-        btn.textContent = n === 3 ? "Opravdu zobrazit celé řešení?" : "Opravdu? Přijdeš o hvězdu…";
+        btn.textContent = n === 3
+          ? "Opravdu zobrazit celé řešení? (jako ve hře: nelze vzít bez nápovědy a postupu)"
+          : "Opravdu? Trestné kilometry se přičtou…";
         return;
       }
       if (n === 3) { s.revealed = true; s.hints = Math.max(s.hints, 2); }
