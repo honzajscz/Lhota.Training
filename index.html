@@ -308,9 +308,12 @@
     <p>Šifry vezete s sebou v <b>zapečetěných herních obálkách</b> — pozor, mezi nimi může být i diskvalifikační!
     Otevíráte vždy jen tu, ke které vyzve vývěska na stanovišti. Vyluštěním šifry je <b>A-kód: smysluplné české slovo,
     podstatné jméno v 1. pádě jednotného čísla</b> (i vlastní jméno). Šifry používají anglickou abecedu o 26 písmenech,
-    CH se počítá jako dvě písmena. Kód se zadává do systému, který prozradí polohu dalších stanovišť.
-    Stanovišť v terénu je 9 plus start a cíl; na každém je i úkol za <b>B-kód</b> a po trase se dají najít
-    bonusové <b>C-kódy</b>. Luštit pomocí AI je zakázáno.</p>
+    CH se počítá jako dvě písmena. Stanovišť v terénu je 9 plus start a cíl; na každém je i úkol za <b>B-kód</b>
+    a po trase se dají najít bonusové <b>C-kódy</b>.</p>
+    <p>Stanoviště jsou organizovaná do <b>pater</b>, otevřených jen v daných časech: vyluštění jedné šifry prozradí
+    polohu dvou stanovišť dalšího patra, takže k odhalení všech tří stačí dvě šifry. Polohu cíle dá závěrečná
+    šifra <b>A-Final</b> (bez možnosti nápovědy). Při luštění je povolený internet i šifrovací pomůcky —
+    zakázané je jen cílené používání AI.</p>
 
     <h2>Bodování (trestné kilometry)</h2>
     <p>Vyhrává tým s <b>nejnižším součtem najetých a trestných kilometrů</b>. Přesně podle pravidel:</p>
@@ -347,6 +350,7 @@
       <li><a href="https://22.lhotatrophy.net/sifry.pdf" rel="noopener">Šifry a výsledky XXII. ročníku (PDF)</a> — reálné šifry i s řešeními; z nich vychází pátá etapa tréninku</li>
       <li><a href="https://lhotatrophy17.technicka-prestavka.cz/?l=sifry" rel="noopener">Šifry Lhota Trophy XVII</a> — starší archiv</li>
       <li><a href="https://sifrovacky.cz/jak-hrat/principy-sifer/" rel="noopener">Principy šifer na sifrovacky.cz</a> — obecná teorie šifrovacích her</li>
+      <li><a href="https://chlyftym.cz/pomucky/" rel="noopener">Šifrovací pomůcky chlyftym.cz</a> — oficiálně doporučená luštitelská výbava</li>
     </ul>
 
     <h2>Jak trénovat s touhle aplikací</h2>
@@ -631,7 +635,8 @@ const THEORY = [
       <li><b>Vyšel ti nesmysl?</b> Nezahazuj ho! Často je to jen mezikrok — prožeň ho druhou šifrou (typicky posun nebo A↔Z).</li>
       <li><b>Heslo je vždy</b> české podstatné jméno v 1. pádě jednotného čísla (může být i vlastní jméno). Když vyjde „skoro slovo", zkontroluj si postup — háčky a čárky se zahazují (HVEZDA = HVĚZDA).</li>
       <li><b>Dle oficiálních pravidel</b> šifry používají anglickou abecedu o 26 písmenech a <b>CH se počítá jako dvě písmena</b> (C+H). Starší ročníky ale občas počítaly česky s CH — když ti to o jedno nevychází, zkus obojí.</li>
-      <li>A pozor: na skutečné Lhotě je <b>cílené používání AI k luštění zakázáno</b>. Trénuj hlavu, ne chatbota. 😉</li>
+      <li><b>Internet a šifrovací pomůcky jsou povolené</b> (organizátoři sami doporučují <a href="https://chlyftym.cz/pomucky/" rel="noopener">chlyftym.cz/pomucky</a>) — zakázané je jen cílené používání AI. Trénuj hlavu, pomůcky měj po ruce.</li>
+      <li><b>Neboj se nápověd.</b> Oficiální rada z pravidel: vyluštění s nápovědou či postupem je vždy výhodnější než nevyluštění (25–50 km proti 75 km).</li>
     </ol>`
   },
   {
@@ -730,7 +735,8 @@ const THEORY = [
       <li><b>Tematická křížovka:</b> všechny odpovědi spojuje jedno téma — a napoví ho název úlohy (v „Bezedné křížovce“ XXI. ročníku byly všechny odpovědi nádoby, včetně chytáků jako LOM = refrakce nebo SUD = domov Díogéna). Tajenku skládají očíslovaná či zvýrazněná políčka.</li>
       <li><b>Obrázkové rovnice:</b> pojmenuj obrázek a pak s ním počítej po písmenech: ŠKODA − Š + V = VODKA. Pozor, hledaná slova často ladí s tématem ročníku (na „pivním“ XXI. ročníku se v rovnicích vyráběly nápoje).</li>
     </ol>
-    <p>Obecná rada: u rébusů zkoušej synonyma (auto = ŠKODA = FÁRO = VŮZ) — správné je to, se kterým rovnice vyjde.</p>`
+    <p>Obecná rada: u rébusů zkoušej synonyma (auto = ŠKODA = FÁRO = VŮZ) — správné je to, se kterým rovnice vyjde.</p>
+    <p>Další formáty předstartovních úkolů z XXI. ročníku: <b>obrázková křížovka</b> (pojmenuj obrázky, vyznačená políčka dají tajenku), <b>počítací příběh</b> (dlouhé vyprávění, ve kterém musíš něco pečlivě spočítat — třeba kolik panáků se vypilo), <b>text prošpikovaný čísly</b> (číslovka ve větě říká, kolikáté písmeno vzít) a <b>mapa s vědomostmi</b> (data a osobnosti přiřaď k bodům na mapě).</p>`
   },
   {
     id: "klic", tag: "Start", title: "Ročníkový klíč z prologu",
