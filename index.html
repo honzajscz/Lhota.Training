@@ -848,6 +848,8 @@ function renderPuzzle(id) {
   });
 
   $("#puzzleView [data-back]").addEventListener("click", () => showList());
+  document.querySelectorAll("#puzzleView [data-open]").forEach(el =>
+    el.addEventListener("click", () => showPuzzle(el.dataset.open)));
   bindTheoryLinks("#puzzleView");
   window.scrollTo(0, 0);
 }
@@ -864,10 +866,9 @@ function showPuzzle(id) {
   $("#resetRow").style.display = "none";
   $("#puzzleView").classList.add("active");
   renderPuzzle(id);
-  bindStations();
 }
 function bindStations() {
-  document.querySelectorAll("[data-open]").forEach(el =>
+  document.querySelectorAll("#stationList [data-open]").forEach(el =>
     el.addEventListener("click", () => showPuzzle(el.dataset.open)));
 }
 
