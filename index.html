@@ -606,6 +606,7 @@ const THEORY = [
       <li><b>Čísla 1–26?</b> Skoro jistě pořadí písmen v abecedě (A=1).</li>
       <li><b>Dvojice cifer 1–5?</b> Polybiův čtverec (řádek + sloupec).</li>
       <li><b>Tečky a čárky, krátké/dlouhé, dvě různé věci?</b> Morseovka. Nuly a jedničky po pěti? Binár.</li>
+      <li><b>Jen znaky 0–9 a A–F?</b> Hexadecimální čísla — převeď na desítková čísla nebo binár a pak na písmena.</li>
       <li><b>Vypadá to jako slovo, ale není?</b> Zkus posun abecedy (±1, ±3, ROT13…) a obrácenou abecedu (A↔Z).</li>
       <li><b>Smysluplný text, který nedává smysl jako celek?</b> Čti první písmena slov/řádků, každé druhé či třetí písmeno, nebo text pozpátku.</li>
       <li><b>Počet písmen jde hezky do tabulky?</b> Zkus text zapsat do mřížky a číst jiným směrem (po sloupcích, hadem, po úhlopříčkách).</li>
@@ -703,6 +704,16 @@ const THEORY = [
     body: `<p>Lhota miluje šifry, kde mezikrokem je <b>znalost</b>: historická data → místa událostí, úryvky her → roky uvedení, noty → jména, vlajky → státy. Z názvů se pak berou písmena na daných pozicích.</p>
     <p>Druhý oblíbený trik: výsledkem luštění nejsou přímo písmena hesla, ale <b>tři slova, která heslo asociují</b> (na XXII. Lhotě vyšla slova SEDLO, ŠEMÍK, TRÓJA — heslo KŮŇ).</p>
     <p>Co si vzít do auta: přehled českých dějin (letopočty!), Cimrmana, mapu ČR. A když vyjdou podivná slova, ptej se: „Co mají společného?"</p>`
+  },
+  {
+    id: "klic", tag: "Start", title: "Ročníkový klíč z prologu",
+    body: `<p>Lhota mívá <b>vlastní klíč platný celý den</b>, který dostaneš na startu nebo v prologu — a šifry na něj pak celý den mlčky odkazují.</p>
+    <p>Na XXII. ročníku to byla <b>„česká hvězda"</b>: osmicípá hvězda s kompletní českou abecedou včetně CH, diakritiky a interpunkce, rozdělenou do tří barevných prstenců (bílý vnější, červený střední, modrý vnitřní). Používala se v prologu, v šifře A3 (hexadecimální text ve třech barvách = tři prstence hvězdy) i v závěrečné K1. Jiný herní předmět, trubka ze startovní tašky, posloužil až za půl dne u šifry G1.</p>
+    <ol class="checklist">
+      <li>Všechno, co dostaneš na startu, <b>vozíš s sebou a máš na očích</b> — nic z toho není suvenýr.</li>
+      <li>Když šifra používá <b>barvy</b>, hledej, čemu barvy odpovídají v ročníkovém klíči.</li>
+      <li>Když nevíš, kudy dál, projdi si znovu prolog, vývěsky a herní předměty — spojení s nimi bývá ten „aha" moment.</li>
+    </ol>`
   },
   {
     id: "teren", tag: "Terén", title: "Co všechno už na Lhotě bylo",
