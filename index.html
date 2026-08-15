@@ -19,6 +19,11 @@
     <label class="field-label" for="inp">Co vidíš?</label>
     <textarea id="inp" rows="3" autofocus spellcheck="false" autocomplete="off"
       placeholder="např.  .- .... --- .---   nebo   20 1 10 5 14 11 1   nebo   01001"></textarea>
+    <div class="key-row">
+      <label class="key-label" for="key">Klíč</label>
+      <input id="key" type="text" spellcheck="false" autocomplete="off"
+        placeholder="nepovinný – pro Vigenère a sloupcovou transpozici">
+    </div>
     <div class="input-foot">
       <div class="examples" id="examples" aria-label="Příklady vstupu"></div>
       <button type="button" class="ghost-btn" id="clear" hidden>Smazat</button>
@@ -54,7 +59,10 @@
         <tr><th>Semafor</th><td><code>12 23 34 57</code> — dvojice směrů paží: 1 = dolů, dál po směru hodinových ručiček (3 = vodorovně vlevo, 5 = nahoru…). Zkouší se i zrcadlově.</td></tr>
         <tr><th>Braille</th><td><code>1 125 135 245</code> — čísla vyplněných teček (1–3 levý sloupec shora, 4–6 pravý), anebo přímo znaky <code>⠁⠓⠕⠚</code>.</td></tr>
         <tr><th>Mobil</th><td><code>2 44 444 55</code> — opakované stisky kláves; u zápisu <code>8253</code> (jeden stisk = jedno písmeno) se odhadne nejpravděpodobnější čtení.</td></tr>
-        <tr><th>Písmena</th><td>posunutá abeceda (všech 25 posunů), Atbash, čtení pozpátku, římské číslice, Baconova šifra (<code>AABAB…</code>), šestnáctková soustava, Base64.</td></tr>
+        <tr><th>Písmena</th><td>posunutá abeceda (všech 25 posunů), Atbash, čtení pozpátku, převod abeceda ↔ pořadí na klávesnici, římské číslice, Baconova šifra (<code>AABAB…</code>), šestnáctková soustava, Base64.</td></tr>
+        <tr><th>Skryté v textu</th><td>první / poslední / n-tá písmena slov, každé n-té písmeno textu, rail fence (cikcak), leet speak (<code>Z3L3N4</code>).</td></tr>
+        <tr><th>Další čísla</th><td>protonová čísla → chemické značky (<code>39 8 88</code> → YORa), čísla měsíců → počáteční písmena, osmičkové ASCII.</td></tr>
+        <tr><th>S klíčem</th><td>po vyplnění pole <em>Klíč</em> navíc Vigenère (odečíst i přičíst), Beaufort a sloupcová transpozice oběma směry.</td></tr>
       </table>
       <p>U každého čtení jde rozkliknout <em>další varianty</em> (ostatní posuny,
         abecedy…), zkopírovat výsledek, nebo ho tlačítkem <em>Luštit dál</em>

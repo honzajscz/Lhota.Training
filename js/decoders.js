@@ -179,6 +179,27 @@ const LENGINE = (() => {
     if (min >= 0 && max <= 25)
       cand(add, 'a1z26', 'Čísla → písmena (A = 0)', null,
         nums.map(n => latin(n + 1)).join(''), 0.85, null);
+    if (min >= 1 && max <= 26)
+      cand(add, 'qwerty', 'Čísla → klávesnice (Q = 1)', 'pořadí QWERTY',
+        nums.map(n => LDATA.QWERTY[n - 1]).join(''), 0.6, null);
+    if (min >= 1 && max <= 12 && p.tokens.length >= 3) {
+      cand(add, 'months', 'Čísla → měsíce (počáteční písmena)', 'česky',
+        nums.map(n => LDATA.MONTHS.cs[n - 1]).join(''), 0.5, null);
+      cand(add, 'months', 'Čísla → měsíce (počáteční písmena)', 'anglicky',
+        nums.map(n => LDATA.MONTHS.en[n - 1]).join(''), 0.5, null);
+    }
+    if (min >= 1 && max <= 118)
+      cand(add, 'elements', 'Protonová čísla → chemické značky', null,
+        nums.map(n => LDATA.ELEMENTS[n - 1]).join(''),
+        max > 26 ? 0.65 : 0.45, null);
+    if (p.tokens.every(t => /^[0-7]{2,3}$/.test(t))) {
+      const dec = mapTokens(p.tokens, t => {
+        const v = parseInt(t, 8);
+        return v >= 32 && v < 127 ? String.fromCharCode(v) : null;
+      });
+      if (dec) cand(add, 'octal', 'ASCII kódy (osmičkově)', null, dec.text,
+        applicWithErrors(0.6, dec), null);
+    }
     if (min >= 1 && max <= 27 && max === 27)
       cand(add, 'a1z26cz', 'Čísla → písmena (česká abeceda s CH, A = 1)', null,
         nums.map(n => LDATA.CZ_ALPHABET[n - 1]).join(''), 0.9, null);
@@ -377,6 +398,153 @@ const LENGINE = (() => {
         0.5, null);
   }
 
+  /* Leet speak: číslice a symboly jako písmena (Z3L3N4 → ZELENA) */
+  function tryLeet(p, add) {
+    const folded = LSCORE.fold(p.trimmed);
+    let subs = 0, letters = 0;
+    const out = [...folded].map(c => {
+      if (/[A-Z]/.test(c)) { letters++; return c; }
+      if (LDATA.LEET[c]) { subs++; return LDATA.LEET[c]; }
+      return c;
+    }).join('');
+    if (!subs || !letters || letters / (letters + subs) < 0.3) return;
+    cand(add, 'leet', 'Leet speak (číslice jako písmena)', null, out, 0.7, null);
+  }
+
+  /* N-tá písmena slov: klasika „ber první písmena“ */
+  function tryWordLetters(p, add) {
+    const words = LSCORE.fold(p.trimmed).split(/[^A-Z]+/).filter(w => w.length);
+    if (words.length < 3) return;
+    const avgLen = words.reduce((a, w) => a + w.length, 0) / words.length;
+    if (avgLen < 2) return;
+    cand(add, 'wordletters', 'První písmena slov', null,
+      words.map(w => w[0]).join(''), 0.7, null);
+    cand(add, 'wordletters', 'Poslední písmena slov', null,
+      words.map(w => w[w.length - 1]).join(''), 0.5, null);
+    for (const n of [2, 3])
+      if (words.every(w => w.length >= n))
+        cand(add, 'wordletters', `${n}. písmena slov`, null,
+          words.map(w => w[n - 1]).join(''), 0.45, null);
+  }
+
+  /* Každé n-té písmeno souvislého textu */
+  function tryNthLetter(p, add) {
+    const letters = LSCORE.fold(p.trimmed).replace(/[^A-Z]/g, '');
+    if (letters.length < 8) return;
+    const opts = [];
+    for (const n of [2, 3, 4])
+      for (let off = 0; off < n; off++) {
+        let out = '';
+        for (let i = off; i < letters.length; i += n) out += letters[i];
+        if (out.length >= 4)
+          opts.push({ label: `každé ${n}. od ${off + 1}. písmene`, out,
+            ev: LSCORE.evaluate(out) });
+      }
+    if (!opts.length) return;
+    opts.sort((a, b) => b.ev.score - a.ev.score);
+    /* krátké výtažky bývají náhoda – čím delší čtení, tím věrohodnější */
+    const applic = 0.45 * Math.min(1, opts[0].out.length / 8);
+    cand(add, 'nth', 'Každé n-té písmeno', opts[0].label, opts[0].out, applic, null);
+    const c = add[add.length - 1];
+    if (c && c.methodId === 'nth')
+      c.alternatives = opts.slice(1).map(o => ({ label: o.label, out: o.out }));
+  }
+
+  /* Rail fence („plot“) – čtení po řádcích cikcak */
+  function tryRailFence(p, add) {
+    const letters = LSCORE.fold(p.trimmed).replace(/[^A-Z0-9]/g, '');
+    const L = letters.length;
+    if (L < 6) return;
+    const opts = [];
+    for (let rails = 2; rails <= Math.min(5, L - 1); rails++) {
+      /* dráha cikcak: kterému řádku patří i-tá pozice původního textu */
+      const row = [];
+      for (let i = 0, r = 0, dir = 1; i < L; i++) {
+        row.push(r);
+        if (rails > 1) {
+          r += dir;
+          if (r === 0 || r === rails - 1) dir = -dir;
+        }
+      }
+      const counts = Array(rails).fill(0);
+      for (const r of row) counts[r]++;
+      const starts = [];
+      let acc = 0;
+      for (let r = 0; r < rails; r++) { starts.push(acc); acc += counts[r]; }
+      const idx = starts.slice();
+      let out = '';
+      for (let i = 0; i < L; i++) out += letters[idx[row[i]]++];
+      opts.push({ label: `${rails} řádky`, out, ev: LSCORE.evaluate(out) });
+    }
+    opts.sort((a, b) => b.ev.score - a.ev.score);
+    cand(add, 'railfence', 'Rail fence (cikcak po řádcích)', opts[0].label,
+      opts[0].out, 0.5, null);
+    const c = add[add.length - 1];
+    if (c && c.methodId === 'railfence')
+      c.alternatives = opts.slice(1).map(o => ({ label: o.label, out: o.out }));
+  }
+
+  /* Vigenère + Beaufort – jen když uživatel zadá klíč */
+  function tryVigenere(p, add, key) {
+    const k = LSCORE.fold(key || '').replace(/[^A-Z]/g, '');
+    if (!k.length) return;
+    const folded = LSCORE.fold(p.trimmed);
+    if (!/[A-Z]/.test(folded)) return;
+    const apply = fn => {
+      let j = 0;
+      return folded.replace(/[A-Z]/g, c => {
+        const kv = k[j++ % k.length].charCodeAt(0) - 65;
+        const cv = c.charCodeAt(0) - 65;
+        return String.fromCharCode(65 + ((fn(cv, kv) % 26) + 26) % 26);
+      });
+    };
+    cand(add, 'vigenere', 'Vigenère (klíč: ' + k + ')', 'odečíst klíč',
+      apply((c, kv) => c - kv), 0.95, null);
+    cand(add, 'vigenere', 'Vigenère (klíč: ' + k + ')', 'přičíst klíč',
+      apply((c, kv) => c + kv), 0.7, null);
+    cand(add, 'vigenere', 'Beaufort (klíč: ' + k + ')', null,
+      apply((c, kv) => kv - c), 0.6, null);
+  }
+
+  /* Sloupcová transpozice podle klíče */
+  function tryTransposition(p, add, key) {
+    const k = LSCORE.fold(key || '').replace(/[^A-Z0-9]/g, '');
+    if (k.length < 2) return;
+    const letters = LSCORE.fold(p.trimmed).replace(/[^A-Z0-9]/g, '');
+    const L = letters.length, m = k.length;
+    if (L < m || L < 4) return;
+    const order = [...k].map((c, i) => [c, i])
+      .sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : a[1] - b[1]))
+      .map(x => x[1]);
+
+    /* dešifrování: text byl čten po sloupcích v pořadí klíče */
+    const nrow = Math.ceil(L / m);
+    const rem = L % m;
+    const colLen = j => (rem === 0 || j < rem) ? nrow : nrow - 1;
+    const cols = Array(m);
+    let pos = 0;
+    for (const j of order) {
+      cols[j] = letters.slice(pos, pos + colLen(j));
+      pos += colLen(j);
+    }
+    let out = '';
+    for (let r = 0; r < nrow; r++)
+      for (let j = 0; j < m; j++)
+        if (r < cols[j].length) out += cols[j][r];
+    cand(add, 'transposition', 'Sloupcová transpozice (klíč: ' + k + ')',
+      'čteno po sloupcích', out, 0.8, null);
+
+    /* opačný směr: mřížku po řádcích přečíst po sloupcích v pořadí klíče */
+    let enc = '';
+    for (const j of order)
+      for (let r = 0; r < nrow; r++) {
+        const i = r * m + j;
+        if (i < L) enc += letters[i];
+      }
+    cand(add, 'transposition', 'Sloupcová transpozice (klíč: ' + k + ')',
+      'opačným směrem', enc, 0.6, null);
+  }
+
   /* Posunutá abeceda (Caesar) + Atbash + převrácení */
   function tryLetterTransforms(p, add) {
     const folded = LSCORE.fold(p.trimmed);
@@ -407,6 +575,15 @@ const LENGINE = (() => {
       String.fromCharCode(90 - (ch.charCodeAt(0) - 65)));
     cand(add, 'atbash', 'Atbash (A↔Z)', null, atbash, 0.7, null);
 
+    cand(add, 'qwertyl', 'Klávesnice ↔ abeceda',
+      'pořadí na klávesnici → pořadí v abecedě',
+      folded.replace(/[A-Z]/g, c => latin(LDATA.QWERTY.indexOf(c) + 1)),
+      0.4, null);
+    cand(add, 'qwertyl', 'Klávesnice ↔ abeceda',
+      'pořadí v abecedě → pořadí na klávesnici',
+      folded.replace(/[A-Z]/g, c => LDATA.QWERTY[c.charCodeAt(0) - 65]),
+      0.4, null);
+
     cand(add, 'reverse', 'Pozpátku', 'celý text',
       [...p.trimmed].reverse().join(''), 0.65, null);
     if (/\s/.test(p.trimmed))
@@ -417,18 +594,23 @@ const LENGINE = (() => {
 
   const STRUCTURAL = [tryMorse, tryTwoSymbol, tryBinary, tryNumbers,
     tryDigitString, tryPolybius, trySemaphore, tryBrailleDots,
-    tryBrailleUnicode, tryMultitap, tryKeypadT9, tryHex, tryBase64, tryRoman];
+    tryBrailleUnicode, tryMultitap, tryKeypadT9, tryHex, tryBase64, tryRoman,
+    tryLeet, tryWordLetters, tryNthLetter, tryRailFence, tryLetterTransforms];
+
+  const KEYED = [tryVigenere, tryTransposition];
 
   /* ---------- hlavní analýza ---------- */
 
-  function collect(raw) {
+  function collect(raw, key) {
     const p = makeProfile(raw);
     const list = [];
     if (!p.tokens.length) return list;
     for (const fn of STRUCTURAL) {
       try { fn(p, list); } catch (e) { /* dekodér selhal – přeskočit */ }
     }
-    try { tryLetterTransforms(p, list); } catch (e) { /* dtto */ }
+    for (const fn of KEYED) {
+      try { fn(p, list, key); } catch (e) { /* dtto */ }
+    }
     return list;
   }
 
@@ -441,7 +623,7 @@ const LENGINE = (() => {
 
   function analyze(raw, opts = {}) {
     const depth = opts.depth || 0;
-    let list = collect(raw);
+    let list = collect(raw, opts.key);
 
     /* ohodnotit */
     for (const c of list) {
@@ -455,7 +637,7 @@ const LENGINE = (() => {
       const seeds = [...list].sort((a, b) => b.applic - a.applic).slice(0, 6);
       for (const c of seeds) {
         if (!looksStructural(c.out)) continue;
-        const sub = analyze(c.out, { depth: 1 });
+        const sub = analyze(c.out, { depth: 1, key: opts.key });
         for (const s of sub.slice(0, 3)) {
           if (s.methodId === c.methodId) continue;
           if (looksStructural(s.out)) continue;

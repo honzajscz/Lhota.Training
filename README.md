@@ -44,7 +44,15 @@ věrohodnosti.
 | `48 65 6c 6c 6f` | šestnáctková soustava → ASCII |
 | `QWhvag==` | Base64 |
 | `XX I X V` | římské číslice (→ čísla → písmena) |
-| `BIPK`, `JOHA` | posunutá abeceda (Caesar, všech 25 posunů), Atbash, čtení pozpátku |
+| `BIPK`, `JOHA` | posunutá abeceda (Caesar, všech 25 posunů), Atbash, čtení pozpátku, abeceda ↔ pořadí na klávesnici |
+| `Kůň Umí Běhat Anglicky` | první / poslední / n-tá písmena slov |
+| `AZHVOEJTS` | každé n-té písmeno textu, rail fence (cikcak, 2–5 řádků) |
+| `Z3L3N4 L0UK4` | leet speak – číslice a symboly jako písmena |
+| `39 8 88` | protonová čísla → chemické značky (YORa) |
+| `1 12 4 11` | čísla měsíců → počáteční písmena (česky i anglicky) |
+| `110 145 154` | osmičkové ASCII |
+| `KVRTGYOHH` + klíč `KOD` | Vigenère (odečíst/přičíst), Beaufort |
+| text + klíč | sloupcová transpozice podle klíče (oběma směry) |
 
 Pokud vstup už vypadá jako čitelný text, Luštidlo to poznamená, ať neluštíte
 zbytečně.

@@ -6,6 +6,7 @@
 
   const $ = id => document.getElementById(id);
   const inp = $('inp');
+  const keyInp = $('key');
   const results = $('results');
   const resultsHead = $('resultsHead');
   const empty = $('empty');
@@ -181,7 +182,7 @@
       return;
     }
 
-    allCands = LENGINE.analyze(raw).filter(c => c.pct >= 1);
+    allCands = LENGINE.analyze(raw, { key: keyInp.value }).filter(c => c.pct >= 1);
 
     const pt = LENGINE.plaintextCheck(raw);
     if (pt) {
@@ -202,6 +203,7 @@
     update();
   });
   inp.addEventListener('input', debounce(update, 120));
+  keyInp.addEventListener('input', debounce(update, 120));
 
   update();
 })();

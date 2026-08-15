@@ -46,6 +46,27 @@ const LDATA = {
 
   ROMAN: { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 },
 
+  /* Pořadí písmen na klávesnici */
+  QWERTY: 'QWERTYUIOPASDFGHJKLZXCVBNM',
+
+  /* Značky chemických prvků podle protonového čísla (1–118) */
+  ELEMENTS: ('H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V Cr ' +
+    'Mn Fe Co Ni Cu Zn Ga Ge As Se Br Kr Rb Sr Y Zr Nb Mo Tc Ru Rh Pd Ag Cd ' +
+    'In Sn Sb Te I Xe Cs Ba La Ce Pr Nd Pm Sm Eu Gd Tb Dy Ho Er Tm Yb Lu Hf ' +
+    'Ta W Re Os Ir Pt Au Hg Tl Pb Bi Po At Rn Fr Ra Ac Th Pa U Np Pu Am Cm ' +
+    'Bk Cf Es Fm Md No Lr Rf Db Sg Bh Hs Mt Ds Rg Cn Nh Fl Mc Lv Ts Og').split(' '),
+
+  /* Počáteční písmena měsíců (s odstraněnou diakritikou) */
+  MONTHS: {
+    cs: ['L', 'U', 'B', 'D', 'K', 'C', 'C', 'S', 'Z', 'R', 'L', 'P'],
+    en: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D']
+  },
+
+  /* Leet speak – náhrady číslic a symbolů za písmena */
+  LEET: { '0': 'O', '1': 'I', '2': 'Z', '3': 'E', '4': 'A', '5': 'S',
+    '6': 'G', '7': 'T', '8': 'B', '9': 'G', '@': 'A', '$': 'S', '!': 'I',
+    '+': 'T', '(': 'C', '€': 'E' },
+
   /* Česká abeceda s CH (27 znaků) pro variantu 1–27 */
   CZ_ALPHABET: ['A','B','C','D','E','F','G','H','CH','I','J','K','L','M',
     'N','O','P','Q','R','S','T','U','V','W','X','Y','Z'],
