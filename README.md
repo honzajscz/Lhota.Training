@@ -37,7 +37,7 @@ věrohodnosti.
 | `20 1 10 5 14 11 1` | čísla → písmena (A = 1, A = 0, Z = 1, mod 26, česká abeceda s CH, ASCII) |
 | `20110514111` | souvislé číslice – chytré rozdělení na 1–26 podle jazyka (dynamické programování) |
 | `42 11 24 15 33 25 11` | Polybiův čtverec 5×5 (bez Q / I=J, oba směry) a 6×6 s číslicemi |
-| `12 23 34 57` | semafor – dvojice směrů 1–8 (1 = dolů, po směru ručiček), i zrcadlově |
+| `12 23 34 57` nebo `↙→ ↓↙ ←↑ ↓↙` | semafor – dvojice směrů 1–8 (1 = dolů, po směru ručiček) i zápis šipkami, i zrcadlově |
 | `1 125 135 245` nebo `⠁⠓⠕⠚` | Braillovo písmo (čísla teček i unicode znaky), i zrcadlově |
 | `2 44 444 55` | mobilní klávesnice – opakované stisky |
 | `8253` | mobilní klávesnice – jeden stisk = jedno písmeno, jazykový odhad (Viterbi) |

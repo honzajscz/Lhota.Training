@@ -288,6 +288,42 @@ const LENGINE = (() => {
     }
   }
 
+  /* Semafor zapsaný šipkami: každá šipka = poloha jedné paže,
+   * dvojice šipek = jedno písmeno. Směr → index 1–8 jako v číselném zápisu
+   * (1 = dolů, dál po směru hodinových ručiček z pohledu čtenáře). */
+  const ARROW_DIR = {
+    '↓': 1, '⬇': 1, '⇓': 1,
+    '↙': 2, '⬋': 2,
+    '←': 3, '⬅': 3, '⇐': 3, '⟵': 3,
+    '↖': 4, '⬉': 4,
+    '↑': 5, '⬆': 5, '⇑': 5,
+    '↗': 6, '⬈': 6,
+    '→': 7, '➡': 7, '⇒': 7, '⟶': 7,
+    '↘': 8, '⬊': 8
+  };
+
+  function tryArrows(p, add) {
+    const dirs = [...p.trimmed].map(c => ARROW_DIR[c]).filter(Boolean);
+    if (dirs.length < 4 || dirs.length % 2 !== 0) return;
+    /* šipek musí být většina neprázdných znaků */
+    const nonSpace = p.trimmed.replace(/\s/g, '').length;
+    if (dirs.length < nonSpace * 0.8) return;
+    const pairs = [];
+    for (let i = 0; i < dirs.length; i += 2)
+      pairs.push(`${dirs[i]}${dirs[i + 1]}`);
+    for (const mirror of [false, true]) {
+      const dec = mapTokens(pairs, t => {
+        let [a, b] = [+t[0] - 1, +t[1] - 1];
+        if (mirror) { a = (8 - a) % 8; b = (8 - b) % 8; }
+        const key = a < b ? `${a}${b}` : `${b}${a}`;
+        return a === b ? null : LDATA.SEMAPHORE[key];
+      });
+      if (dec) cand(add, 'semaphore', 'Semafor ze šipek',
+        mirror ? 'zrcadlově' : null, dec.text,
+        applicWithErrors(mirror ? 0.7 : 0.95, dec), null);
+    }
+  }
+
   /* Braille: tokeny z číslic 1–6 = čísla vyplněných teček */
   function tryBrailleDots(p, add) {
     if (p.tokens.length < 1) return;
@@ -598,7 +634,7 @@ const LENGINE = (() => {
   }
 
   const STRUCTURAL = [tryMorse, tryTwoSymbol, tryBinary, tryNumbers,
-    tryDigitString, tryPolybius, trySemaphore, tryBrailleDots,
+    tryDigitString, tryPolybius, trySemaphore, tryArrows, tryBrailleDots,
     tryBrailleUnicode, tryMultitap, tryKeypadT9, tryHex, tryBase64, tryRoman,
     tryLeet, tryWordLetters, tryNthLetter, tryRailFence, tryLetterTransforms];
 
