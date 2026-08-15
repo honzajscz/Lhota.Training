@@ -156,6 +156,25 @@ summary:focus-visible {
   outline-offset: 2px;
 }
 
+.image-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.image-hint { font-size: 0.75rem; color: var(--muted); }
+
+.vision-note {
+  margin: 0.55rem 0 0;
+  padding: 0.45rem 0.7rem;
+  border-radius: 8px;
+  background: var(--chip);
+  color: var(--ink);
+  font-size: 0.82rem;
+}
+
 .input-foot {
   display: flex;
   gap: 0.5rem;

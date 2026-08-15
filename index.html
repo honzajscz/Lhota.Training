@@ -24,6 +24,12 @@
       <input id="key" type="text" spellcheck="false" autocomplete="off"
         placeholder="nepovinný – pro Vigenère a sloupcovou transpozici">
     </div>
+    <div class="image-row">
+      <button type="button" class="ghost-btn" id="imgBtn">📷 Přečíst z obrázku</button>
+      <span class="image-hint">nebo obrázek vlož (Ctrl+V) či přetáhni kamkoli na stránku</span>
+      <input type="file" id="imgFile" accept="image/*" hidden>
+    </div>
+    <p class="vision-note" id="visionNote" hidden></p>
     <div class="input-foot">
       <div class="examples" id="examples" aria-label="Příklady vstupu"></div>
       <button type="button" class="ghost-btn" id="clear" hidden>Smazat</button>
@@ -63,6 +69,7 @@
         <tr><th>Skryté v textu</th><td>první / poslední / n-tá písmena slov, každé n-té písmeno textu, rail fence (cikcak), leet speak (<code>Z3L3N4</code>).</td></tr>
         <tr><th>Další čísla</th><td>protonová čísla → chemické značky (<code>39 8 88</code> → YORa), čísla měsíců → počáteční písmena, osmičkové ASCII.</td></tr>
         <tr><th>S klíčem</th><td>po vyplnění pole <em>Klíč</em> navíc Vigenère (odečíst i přičíst), Beaufort a sloupcová transpozice oběma směry.</td></tr>
+        <tr><th>Obrázek</th><td>fotku či snímek s tečkami/čárkami lze nahrát, vložit ze schránky nebo přetáhnout – skvrny se najdou, rozpoznají jako Braille či morseovka a přepíší do pole, kde je hned vidět i mezikrok. Nejlépe fungují kontrastní obrázky (tmavé na světlém či naopak).</td></tr>
       </table>
       <p>U každého čtení jde rozkliknout <em>další varianty</em> (ostatní posuny,
         abecedy…), zkopírovat výsledek, nebo ho tlačítkem <em>Luštit dál</em>
@@ -80,6 +87,7 @@
 <script src="js/data.js"></script>
 <script src="js/score.js"></script>
 <script src="js/decoders.js"></script>
+<script src="js/vision.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

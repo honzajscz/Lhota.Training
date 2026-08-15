@@ -630,10 +630,12 @@ const LENGINE = (() => {
     const depth = opts.depth || 0;
     let list = collect(raw, opts.key);
 
-    /* ohodnotit */
+    /* ohodnotit; hintId zvýhodní systém rozpoznaný např. z obrázku */
     for (const c of list) {
       c.ev = LSCORE.evaluate(c.out);
       c.total = c.ev.score + Math.log(Math.max(c.applic, 0.01)) * 0.8;
+      if (opts.hintId && c.methodId.startsWith(opts.hintId))
+        c.total += 0.8;
     }
 
     /* řetězení: výstup vypadá pořád jako kód → druhý průchod */

@@ -17,6 +17,7 @@
   const SHOWN = 7;
   let allCands = [];
   let expanded = false;
+  let visionHint = null;
 
   const EXAMPLES = [
     ['morseovka', '.- .... --- .---'],
@@ -182,7 +183,8 @@
       return;
     }
 
-    allCands = LENGINE.analyze(raw, { key: keyInp.value }).filter(c => c.pct >= 1);
+    allCands = LENGINE.analyze(raw, { key: keyInp.value, hintId: visionHint })
+      .filter(c => c.pct >= 1);
 
     const pt = LENGINE.plaintextCheck(raw);
     if (pt) {
@@ -196,12 +198,63 @@
     render();
   }
 
+  /* ---------- vstup obrázkem ---------- */
+
+  const visionNote = $('visionNote');
+  const imgBtn = $('imgBtn');
+  const imgFile = $('imgFile');
+
+  async function handleImage(blob) {
+    visionNote.hidden = false;
+    visionNote.textContent = 'Čtu obrázek…';
+    try {
+      const res = await LVISION.fromFile(blob);
+      if (!res || !res.text.trim()) {
+        visionNote.textContent = 'V obrázku se mi nepodařilo najít čitelné skupiny ' +
+          'teček. Zkus ostřejší / kontrastnější výřez jen se šifrou.';
+        return;
+      }
+      const kindName = res.kind === 'morse' ? 'morseovku' : 'Braillovu mřížku';
+      visionNote.textContent = `Na obrázku jsem našel ${res.count} skvrn a přepsal je jako ${kindName} – zápis můžeš rovnou upravit.`;
+      visionHint = res.kind;
+      inp.value = res.text;
+      update();
+    } catch (e) {
+      visionNote.textContent = 'Tenhle obrázek se nepodařilo načíst.';
+    }
+  }
+
+  imgBtn.addEventListener('click', () => imgFile.click());
+  imgFile.addEventListener('change', () => {
+    if (imgFile.files && imgFile.files[0]) handleImage(imgFile.files[0]);
+    imgFile.value = '';
+  });
+
+  document.addEventListener('paste', e => {
+    for (const item of e.clipboardData ? e.clipboardData.items : []) {
+      if (item.type.startsWith('image/')) {
+        e.preventDefault();
+        handleImage(item.getAsFile());
+        return;
+      }
+    }
+  });
+
+  document.addEventListener('dragover', e => e.preventDefault());
+  document.addEventListener('drop', e => {
+    e.preventDefault();
+    const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f && f.type.startsWith('image/')) handleImage(f);
+  });
+
   moreBtn.addEventListener('click', () => { expanded = true; render(); });
   clearBtn.addEventListener('click', () => {
     inp.value = '';
+    visionNote.hidden = true;
     inp.focus();
     update();
   });
+  inp.addEventListener('input', () => { visionNote.hidden = true; visionHint = null; });
   inp.addEventListener('input', debounce(update, 120));
   keyInp.addEventListener('input', debounce(update, 120));
 
