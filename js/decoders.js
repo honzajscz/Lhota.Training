@@ -47,14 +47,19 @@ const LENGINE = (() => {
 
   /* ---------- jednotlivé dekodéry ---------- */
 
+  /* Tečky a čárky se v praxi objevují v mnoha typografických podobách. */
+  const MORSE_DOTS = /[·•∙⋅․‧●○◦*°]/g;
+  const MORSE_DASHES = /[‐‑‒–—―−﹣－_~]/g;
+  const MORSE_SYMBOLS = new Set('./-·•∙⋅․‧●○◦*°‐‑‒–—―−﹣－_~');
+
   /* Morseovka: . a - (i typografické varianty), / odděluje slova */
   function tryMorse(p, add) {
     if (!p.trimmed) return;
-    if (!/^[.·•\-–—_/|,;\s]+$/.test(p.trimmed)) return;
-    if (!/[.·•]/.test(p.trimmed) && !/[-–—_]/.test(p.trimmed)) return;
     const norm = p.trimmed
-      .replace(/[·•]/g, '.')
-      .replace(/[–—_]/g, '-');
+      .replace(MORSE_DOTS, '.')
+      .replace(MORSE_DASHES, '-');
+    if (!/^[.\-/|,;\s]+$/.test(norm)) return;
+    if (!/[.\-]/.test(norm)) return;
     const words = norm.split(/\s*\/+\s*|\n{2,}/);
     for (const swap of [false, true]) {
       const outWords = [];
@@ -82,7 +87,7 @@ const LENGINE = (() => {
 
   /* Dvojice libovolných symbolů: zkusí morseovku i Baconovu šifru */
   function tryTwoSymbol(p, add) {
-    const sym = [...p.chars].filter(c => !'./-·•–—_'.includes(c));
+    const sym = [...p.chars].filter(c => !MORSE_SYMBOLS.has(c));
     if (p.chars.size !== 2 || sym.length !== 2) return;
     if ([...p.chars].every(c => '01'.includes(c))) return;  // řeší binární dekodér
     const [a, b] = [...p.chars];
