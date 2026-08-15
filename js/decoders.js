@@ -439,6 +439,129 @@ const LENGINE = (() => {
         0.5, null);
   }
 
+  /* Klávesnicový posun: písmeno nahrazeno klávesou hned vedle (psací stroj). */
+  const KEYBOARDS = {
+    QWERTZ: ['QWERTZUIOP', 'ASDFGHJKL', 'YXCVBNM'],
+    QWERTY: ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM']
+  };
+
+  function tryKeyboardShift(p, add) {
+    const folded = LSCORE.fold(p.trimmed);
+    const letters = folded.replace(/[^A-Z]/g, '');
+    if (letters.length < 3) return;
+    if (letters.length / folded.replace(/\s/g, '').length < 0.7) return;
+
+    for (const [name, rows] of Object.entries(KEYBOARDS)) {
+      const pos = {};
+      rows.forEach((row, r) => [...row].forEach((c, i) => pos[c] = [r, i]));
+      for (const delta of [-1, 1]) {
+        let err = 0, tot = 0;
+        const out = [...folded].map(c => {
+          if (!/[A-Z]/.test(c)) return c;
+          tot++;
+          const [r, i] = pos[c];
+          const row = rows[r];
+          const ni = i + delta;
+          if (ni < 0 || ni >= row.length) { err++; return '?'; }
+          return row[ni];
+        }).join('');
+        if (tot && err / tot <= 0.34)
+          cand(add, 'kbshift', 'Klávesnicový posun (psací stroj)',
+            `${name}, o klávesu ${delta < 0 ? 'vlevo' : 'vpravo'}`, out,
+            0.55 * (1 - 0.7 * err / tot), null);
+      }
+    }
+  }
+
+  /* Sčítání/odčítání dvou stejně dlouhých textů (A = 0). */
+  function tryLetterArithmetic(p, add) {
+    let g1, g2;
+    const lines = p.trimmed.split(/\n+/).map(l => l.trim()).filter(Boolean);
+    if (lines.length === 2) {
+      g1 = LSCORE.fold(lines[0]).replace(/[^A-Z]/g, '');
+      g2 = LSCORE.fold(lines[1]).replace(/[^A-Z]/g, '');
+    } else if (p.tokens.length === 2) {
+      g1 = LSCORE.fold(p.tokens[0]).replace(/[^A-Z]/g, '');
+      g2 = LSCORE.fold(p.tokens[1]).replace(/[^A-Z]/g, '');
+    } else return;
+    if (g1.length < 2 || g1.length !== g2.length) return;
+
+    const combine = fn => {
+      let out = '';
+      for (let i = 0; i < g1.length; i++) {
+        const v = ((fn(g1.charCodeAt(i) - 65, g2.charCodeAt(i) - 65)) % 26 + 26) % 26;
+        out += String.fromCharCode(65 + v);
+      }
+      return out;
+    };
+    cand(add, 'letteradd', 'Sčítání písmen (A = 0)', null,
+      combine((a, b) => a + b), 0.75, null);
+    cand(add, 'letteradd', 'Odčítání písmen (A = 0)', 'první − druhý',
+      combine((a, b) => a - b), 0.6, null);
+    cand(add, 'letteradd', 'Odčítání písmen (A = 0)', 'druhý − první',
+      combine((a, b) => b - a), 0.6, null);
+  }
+
+  /* Morseovka schovaná v délkách slov: krátké slovo = tečka, dlouhé = čárka,
+   * čárky (nebo jiná interpunkce) oddělují písmena. */
+  function tryMorseWordLengths(p, add) {
+    if (!/[,;]/.test(p.trimmed)) return;
+    const groups = p.trimmed.split(/[,;]+/).map(s => s.trim()).filter(Boolean);
+    if (groups.length < 2) return;
+    let words = 0;
+    const letters = groups.map(g => {
+      const ws = g.split(/\s+/).filter(Boolean);
+      let code = '';
+      for (const w of ws) {
+        const len = LSCORE.fold(w).replace(/[^A-Z]/g, '').length;
+        if (!len) return null;
+        words++;
+        code += len <= 3 ? '.' : '-';
+      }
+      return LDATA.MORSE[code] || '?';
+    });
+    if (words < 3 || letters.includes(null)) return;
+    const out = letters.join('');
+    if ((out.match(/\?/g) || []).length / out.length > 0.34) return;
+    cand(add, 'morselen', 'Morseovka z délek slov',
+      'krátké slovo = ·, dlouhé = –', out, 0.5, null);
+  }
+
+  /* Bezklíčová transpozice: text zapsaný do obdélníkové mřížky, čtený jiným
+   * směrem. Zkusí všechny rozměry a oba směry plnění. */
+  function tryGridTranspose(p, add) {
+    const letters = LSCORE.fold(p.trimmed).replace(/[^A-Z]/g, '');
+    const n = letters.length;
+    if (n < 6 || n > 48) return;
+    const opts = [];
+    for (let cols = 2; cols < n; cols++) {
+      if (n % cols) continue;
+      const rows = n / cols;
+      /* plnění po řádcích, čtení po sloupcích */
+      let a = '';
+      for (let c = 0; c < cols; c++)
+        for (let r = 0; r < rows; r++) a += letters[r * cols + c];
+      /* plnění po sloupcích, čtení po řádcích (inverzní směr) */
+      let b = '';
+      for (let r = 0; r < rows; r++)
+        for (let c = 0; c < cols; c++) b += letters[c * rows + r];
+      opts.push({ label: `mřížka ${rows}×${cols}, po sloupcích`, out: a,
+        ev: LSCORE.evaluate(a) });
+      opts.push({ label: `mřížka ${rows}×${cols}, po řádcích`, out: b,
+        ev: LSCORE.evaluate(b) });
+    }
+    if (!opts.length) return;
+    const seen = new Set([letters]);
+    const uniq = opts.filter(o => !seen.has(o.out) && seen.add(o.out));
+    if (!uniq.length) return;
+    uniq.sort((x, y) => y.ev.score - x.ev.score);
+    cand(add, 'gridtrans', 'Transpozice v mřížce', uniq[0].label, uniq[0].out,
+      0.4, null);
+    const c = add[add.length - 1];
+    if (c && c.methodId === 'gridtrans')
+      c.alternatives = uniq.slice(1, 12).map(o => ({ label: o.label, out: o.out }));
+  }
+
   /* Leet speak: číslice a symboly jako písmena (Z3L3N4 → ZELENA) */
   function tryLeet(p, add) {
     const folded = LSCORE.fold(p.trimmed);
@@ -636,7 +759,9 @@ const LENGINE = (() => {
   const STRUCTURAL = [tryMorse, tryTwoSymbol, tryBinary, tryNumbers,
     tryDigitString, tryPolybius, trySemaphore, tryArrows, tryBrailleDots,
     tryBrailleUnicode, tryMultitap, tryKeypadT9, tryHex, tryBase64, tryRoman,
-    tryLeet, tryWordLetters, tryNthLetter, tryRailFence, tryLetterTransforms];
+    tryLeet, tryWordLetters, tryNthLetter, tryRailFence, tryKeyboardShift,
+    tryLetterArithmetic, tryMorseWordLengths, tryGridTranspose,
+    tryLetterTransforms];
 
   const KEYED = [tryVigenere, tryTransposition];
 

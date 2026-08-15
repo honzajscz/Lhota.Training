@@ -47,6 +47,10 @@ věrohodnosti.
 | `BIPK`, `JOHA` | posunutá abeceda (Caesar, všech 25 posunů), Atbash, čtení pozpátku, abeceda ↔ pořadí na klávesnici |
 | `Kůň Umí Běhat Anglicky` | první / poslední / n-tá písmena slov |
 | `AZHVOEJTS` | každé n-té písmeno textu, rail fence (cikcak, 2–5 řádků) |
+| `HOB EJL SEA LOK` | bezklíčová transpozice v mřížce (všechny rozměry, oba směry) |
+| `LPDZ` | klávesnicový posun / psací stroj (QWERTZ i QWERTY, o klávesu vedle) |
+| `FBJ GDJ` | sčítání / odčítání dvou stejně dlouhých textů (A = 0) |
+| `JE TO DEN, UŽ, MÁVÁ NÁM` | morseovka schovaná v délkách slov |
 | `Z3L3N4 L0UK4` | leet speak – číslice a symboly jako písmena |
 | `39 8 88` | protonová čísla → chemické značky (YORa) |
 | `1 12 4 11` | čísla měsíců → počáteční písmena (česky i anglicky) |
