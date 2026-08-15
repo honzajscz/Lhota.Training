@@ -322,7 +322,7 @@
     <div class="fact"><b>+50 km</b><span>vyžádání polohy cíle</span></div>
     <div class="fact"><b>+2 km/min</b><span>pozdní dojezd (19:30–20:00)</span></div>
     <p>Tenhle trénink počítá trestné kilometry stejně: nápověda 25, postup 15, řešení 10.
-    Cíl je projet všech 19 stanovišť s nulou.</p>
+    Cíl je projet všech 21 stanovišť s nulou.</p>
 
     <h2>Letošní ročník — XXVIII</h2>
     <div class="fact"><b>Kdy</b><span>2.–4. října 2026 („all-hands meeting", závod tradičně v sobotu)</span></div>
@@ -350,8 +350,8 @@
     </ul>
 
     <h2>Jak trénovat s touhle aplikací</h2>
-    <p>Devatenáct stanovišť je seřazených od nejlehčích po nejtěžší a <b>u žádného není napsáno, jak na něj</b> —
-    stejně jako na závodě. Pátá etapa kopíruje principy skutečných šifer ze XXII. ročníku.
+    <p>21 stanovišť je seřazených od nejlehčích po nejtěžší a <b>u žádného není napsáno, jak na něj</b> —
+    stejně jako na závodě. Pátá etapa kopíruje principy skutečných šifer z XXI. a XXII. ročníku.
     Když se zasekneš, otevři Tahák, nebo si jako ve hře postupně vyžádej nápovědu → postup → řešení;
     každé stojí trestné kilometry. Postup se ukládá v telefonu.</p>
   </section>
@@ -539,8 +539,8 @@ const ETAPY = [
     ]
   },
   {
-    name: "Naostro — podle XXII. ročníku",
-    sub: "principy okopírované ze skutečných šifer",
+    name: "Naostro — podle skutečných ročníků",
+    sub: "principy okopírované z reálných šifer XXI a XXII",
     puzzles: [
       {
         id: "s16", title: "Rozbitá mašina",
@@ -578,6 +578,24 @@ const ETAPY = [
         h1: "Obsah slov je nesmysl — důležité je, jak jsou dlouhá. Krátké a dlouhé… kde jsi to už viděl?",
         h2: "Slova do 3 písmen = tečka, delší = čárka; čárky v textu oddělují písmena morseovky. <a data-theory='morse'>Tahák: Morseovka</a>",
         sol: "JE(2) TO(2) DEN(3) = ··· = <b>S</b>; UŽ(2) = · = <b>E</b>; MÁVÁ(4) NÁM(3) = −· = <b>N</b> → heslo <b>SEN</b>. Schovávání morseovky do vlastností textu je na Lhotě klasika — na XXII. ročníku byla morseovka třeba v barvách na proužku papíru (šifra G2) nebo na provázcích v bazénu (J1)."
+      },
+      {
+        id: "s20", title: "Cedule na výčepu",
+        flavor: "Na dveřích vesnického výčepu visí křídou psaná cedule. Vypadá jako rovnice, ale s čísly nemá nic společného.",
+        plateHTML: `<div style="font-size:30px">🐐 − A + EL = ?</div>`,
+        answers: ["KOZEL"],
+        h1: "Nejdřív pojmenuj obrázek česky, jedním slovem. Pak ber rovnici doslova — písmena jdou přičítat i odečítat.",
+        h2: "Obrázkový rébus: slovo z obrázku, od něj odtrhni uvedená písmena a jiná přidej. <a data-theory='rebusy'>Tahák: Křížovky a rébusy</a>",
+        sol: "Obrázek je KOZA. KOZA − A = KOZ, KOZ + EL = <b>KOZEL</b> (a rovnou pivo, jak jinak). Přesně takhle fungoval předstartovní úkol XXI. Lhoty: obrázkové rovnice, ve kterých se ± písmeny vyráběly názvy nápojů (ŠKODA − Š + V = VODKA)."
+      },
+      {
+        id: "s21", title: "Bezedná křížovka",
+        flavor: "Poslední list bloku: čtyři legendy jako z křížovky, mřížka nikde. U každé je jen délka slova a jedno malé číslo. Všechny čtyři odpovědi něco spojuje…",
+        plateHTML: `<div style="font-size:15px;text-align:left;display:inline-block;line-height:1.8">1. sklenice na květinu (4) → vezmi 1. písmeno<br>2. klec pro rybičky (8) → 1. písmeno<br>3. nádoba na čaj (7) → 3. písmeno<br>4. plastový sud (5) → 2. písmeno</div>`,
+        answers: ["VANA"],
+        h1: "Všechny čtyři odpovědi jsou nádoby. A heslo, které z vybraných písmen složíš, je taky jedna — bezedná bývá jen v pohádkách.",
+        h2: "Vylušti slova jako v křížovce a z každého vezmi písmeno na uvedené pozici, popořadě. <a data-theory='rebusy'>Tahák: Křížovky a rébusy</a>",
+        sol: "1. <b>V</b>ÁZA, 2. <b>A</b>KVÁRIUM, 3. KO<b>N</b>VICE, 4. B<b>A</b>REL → heslo <b>VANA</b>. Legendy jsou vypůjčené ze skutečné „Bezedné křížovky“ XXI. Lhoty — tam měly všechny odpovědi (VLTAVA, BAJKAL, SUD pro Diogéna, LOM jako refrakce…) společné téma nádob a tajenku skládala očíslovaná políčka."
       },
     ]
   },
@@ -704,6 +722,15 @@ const THEORY = [
     body: `<p>Lhota miluje šifry, kde mezikrokem je <b>znalost</b>: historická data → místa událostí, úryvky her → roky uvedení, noty → jména, vlajky → státy. Z názvů se pak berou písmena na daných pozicích.</p>
     <p>Druhý oblíbený trik: výsledkem luštění nejsou přímo písmena hesla, ale <b>tři slova, která heslo asociují</b> (na XXII. Lhotě vyšla slova SEDLO, ŠEMÍK, TRÓJA — heslo KŮŇ).</p>
     <p>Co si vzít do auta: přehled českých dějin (letopočty!), Cimrmana, mapu ČR. A když vyjdou podivná slova, ptej se: „Co mají společného?"</p>`
+  },
+  {
+    id: "rebusy", tag: "Těžší", title: "Křížovky a rébusy",
+    body: `<p>Dva formáty, které se na Lhotě objevují hlavně v <b>předstartovních úkolech</b> (domácí úkoly za kódy ještě před závodem):</p>
+    <ol class="checklist">
+      <li><b>Tematická křížovka:</b> všechny odpovědi spojuje jedno téma — a napoví ho název úlohy (v „Bezedné křížovce“ XXI. ročníku byly všechny odpovědi nádoby, včetně chytáků jako LOM = refrakce nebo SUD = domov Díogéna). Tajenku skládají očíslovaná či zvýrazněná políčka.</li>
+      <li><b>Obrázkové rovnice:</b> pojmenuj obrázek a pak s ním počítej po písmenech: ŠKODA − Š + V = VODKA. Pozor, hledaná slova často ladí s tématem ročníku (na „pivním“ XXI. ročníku se v rovnicích vyráběly nápoje).</li>
+    </ol>
+    <p>Obecná rada: u rébusů zkoušej synonyma (auto = ŠKODA = FÁRO = VŮZ) — správné je to, se kterým rovnice vyjde.</p>`
   },
   {
     id: "klic", tag: "Start", title: "Ročníkový klíč z prologu",
