@@ -275,6 +275,40 @@
   @media (prefers-reduced-motion: no-preference) {
     .station, .answer button, nav.tabs button { transition: background-color .15s, color .15s, border-color .15s; }
   }
+
+  .printrow { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 18px; }
+  .printrow button, .printrow a {
+    font: inherit; font-size: 14px; font-weight: 700; text-decoration: none;
+    background: var(--surface); color: var(--accent-text);
+    border: 1px solid var(--line); border-radius: 8px; padding: 9px 14px; cursor: pointer;
+  }
+  .print-head { display: none; }
+
+  /* ── tisk: jen tahák, černobíle, vše rozbalené ── */
+  @media print {
+    header.app, nav.tabs, #tab-trenink, #tab-ohre, .printrow { display: none !important; }
+    section.tab { display: none !important; }
+    #tab-tahak { display: block !important; }
+    body { background: #fff !important; color: #000 !important; padding: 0; font-size: 12px; }
+    main { max-width: none; padding: 0; }
+    .print-head { display: block; font-size: 18px; font-weight: 800; margin: 0 0 2mm; }
+    .print-head small { display: block; font-size: 10px; font-weight: 400; color: #444; }
+    .intro { color: #333; }
+    details.theory {
+      break-inside: avoid; page-break-inside: avoid;
+      border: 1px solid #999; border-radius: 0; background: #fff; margin-bottom: 3mm;
+    }
+    details.theory summary { padding: 2mm 3mm; font-size: 13px; }
+    details.theory summary::after { content: none; }
+    details.theory .body { padding: 0 3mm 2mm; font-size: 11.5px; }
+    .tag { background: none; color: #000; border: 1px solid #000; }
+    .grid-abc { grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .grid-abc div { background: #fff; border-color: #aaa; font-size: 10.5px; padding: 1mm; }
+    .grid-abc b { color: #000; }
+    table.ref th, table.ref td { border-color: #999; }
+    table.ref th { background: #eee; }
+    a { color: #000 !important; text-decoration: none; }
+  }
 </style>
 
 <header class="app">
@@ -295,9 +329,14 @@
 
   <!-- ═══════════ TAHÁK ═══════════ -->
   <section class="tab" id="tab-tahak">
+    <div class="print-head">Lhotecká přípravka — tahák šifer<small>honzajscz.github.io/Lhota.Training · vytištěno pro offline učení, vezmi s sebou do auta</small></div>
     <p class="intro">Na Lhotě ti nikdo neřekne, jakou šifrou je zpráva zašifrovaná — poznat princip je půlka úlohy.
     Tenhle tahák smíš používat i při tréninku zdarma: přesně tak to funguje na závodě, kde má tým s sebou vytištěné tabulky.
     Trestné kilometry stojí až vyžádané nápovědy.</p>
+    <div class="printrow">
+      <button id="printBtn">🖨️ Vytisknout tahák</button>
+      <a href="https://honzajscz.github.io/Lhota.Training/tahak.pdf" rel="noopener">⬇️ Stáhnout jako PDF</a>
+    </div>
     <div id="theoryList"></div>
   </section>
 
@@ -994,6 +1033,21 @@ function switchTab(name) {
   window.scrollTo(0, 0);
 }
 TABS.forEach(t => $(`#nav-${t}`).addEventListener("click", () => switchTab(t)));
+
+/* tisk taháku: před tiskem rozbal všechny kapitoly, po tisku vrať zpět */
+let openedForPrint = [];
+window.addEventListener("beforeprint", () => {
+  openedForPrint = [...document.querySelectorAll("details.theory:not([open])")];
+  openedForPrint.forEach(d => d.open = true);
+});
+window.addEventListener("afterprint", () => {
+  openedForPrint.forEach(d => d.open = false);
+  openedForPrint = [];
+});
+$("#printBtn").addEventListener("click", () => {
+  switchTab("tahak");
+  window.print();
+});
 
 $("#resetBtn").addEventListener("click", () => {
   if (confirm("Opravdu smazat veškerý postup?")) {
