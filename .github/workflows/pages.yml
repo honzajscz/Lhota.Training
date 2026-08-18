@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [master]
+    branches: [master, claude/lhota-trophy-training-u6miej]
   workflow_dispatch:
 
 permissions:
