@@ -265,6 +265,42 @@
   }
   .about .fact b { min-width: 110px; display: inline-block; }
 
+  /* ── web Lhota Corp ── */
+  .eyebrow {
+    font-size: 11.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent-text); margin: 26px 0 2px;
+  }
+  .eyebrow + h2 { margin-top: 0; }
+  .webnote {
+    background: var(--surface2); border-radius: 10px; padding: 10px 12px;
+    font-size: 13.5px; color: var(--muted); margin: 4px 0 16px;
+  }
+  blockquote.motto {
+    margin: 14px 0; padding: 12px 14px;
+    background: var(--surface); border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0;
+  }
+  blockquote.motto p { margin: 0 0 8px; }
+  blockquote.motto cite { font-size: 13px; color: var(--muted); font-style: normal; }
+  .cards { display: grid; gap: 8px; margin: 10px 0; }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    padding: 12px 14px; font-size: 14.5px;
+  }
+  .card h3 { margin: 0; font-size: 16px; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .card h3 .mono { font-size: 17px; letter-spacing: .04em; }
+  .card .sub { color: var(--accent-text); font-size: 13px; font-weight: 700; margin: 2px 0 6px; }
+  .card p { margin: 4px 0 0; }
+  .card .meta { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+  .initials {
+    font-family: ui-monospace, Menlo, Consolas, monospace; font-weight: 700; font-size: 13px;
+    background: var(--plate-bg); color: var(--plate-ink); border-radius: 50%;
+    width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .person { display: flex; gap: 12px; align-items: center; }
+  .person b { display: block; font-size: 15px; }
+  .person span { font-size: 13px; color: var(--muted); }
+
   .resetrow { margin: 28px 0 8px; text-align: center; }
   .resetrow button {
     font: inherit; font-size: 13px; color: var(--muted);
@@ -286,7 +322,7 @@
 
   /* ── tisk: jen tahák, černobíle, vše rozbalené ── */
   @media print {
-    header.app, nav.tabs, #tab-trenink, #tab-ohre, .printrow { display: none !important; }
+    header.app, nav.tabs, #tab-trenink, #tab-ohre, #tab-web, .printrow { display: none !important; }
     section.tab { display: none !important; }
     #tab-tahak { display: block !important; }
     body { background: #fff !important; color: #000 !important; padding: 0; font-size: 12px; }
@@ -394,7 +430,7 @@
 
     <h2>Odkazy</h2>
     <ul>
-      <li><a href="https://28.lhotatrophy.cz/" rel="noopener">28.lhotatrophy.cz</a> — web letošního ročníku: termín, registrace, pravidla</li>
+      <li><a href="https://28.lhotatrophy.cz/" rel="noopener">28.lhotatrophy.cz</a> — web letošního ročníku: termín, registrace, pravidla (výtah je v záložce Lhota Corp)</li>
       <li><a href="https://27.lhotatrophy.net/" rel="noopener">27.lhotatrophy.net</a> — loňský ročník a Školní řád (pravidla)</li>
       <li><a href="https://22.lhotatrophy.net/sifry.pdf" rel="noopener">Šifry a výsledky XXII. ročníku (PDF)</a> — reálné šifry i s řešeními; z nich vychází pátá etapa tréninku</li>
       <li><a href="https://lhotatrophy17.technicka-prestavka.cz/?l=sifry" rel="noopener">Šifry Lhota Trophy XVII</a> — starší archiv</li>
@@ -410,11 +446,130 @@
     Když se zasekneš, otevři Tahák, nebo si jako ve hře postupně vyžádej nápovědu → postup → řešení;
     každé stojí trestné kilometry. Postup se ukládá v telefonu.</p>
   </section>
+
+  <!-- ═══════════ WEB LHOTA CORP ═══════════ -->
+  <section class="tab about" id="tab-web">
+    <h2 style="margin-top:4px">Web Lhota Corp: výtah</h2>
+    <p class="webnote">Všechno podstatné z webu letošního ročníku
+    <a href="https://28.lhotatrophy.cz/" rel="noopener">28.lhotatrophy.cz</a>, sekci po sekci, aby se dal
+    pročíst i offline v autě. Texty jsou převzaté doslova podle uloženého snímku webu
+    (<a href="archiv/web_xxviii_lhotacorp.pdf">PDF v archivu</a>). Na konci je, čeho si všimnout.</p>
+
+    <div class="fact"><b>Aktuální zpráva</b><span>„Připomínáme všem zaměstnancům skupiny Lhota Corp, že příští all-hands meeting
+    se uskuteční ve dnech 2.–4. 10. 2026." (odkaz Registrace)</span></div>
+
+    <p class="eyebrow">Úvod · Globální lídr od roku 1999</p>
+    <h2>Posouváme hranice lidského vědění, řešíme největší problémy světa.</h2>
+    <p>Vítejte na portálu Lhota Corp, globálního lídra v oblasti synergických řešení, disruptivních
+    technologií a komplexního re-engineeringu lidského potenciálu. Již od roku 1999 přinášíme inovace,
+    které definují budoucnost celých průmyslových, vědeckých i humanitních oborů.</p>
+
+    <p class="eyebrow" id="o-nas">O společnosti</p>
+    <h2>Definujeme technologický zítřek</h2>
+    <p>Společnost Lhota Corp je synonymem pro technologický a infrastrukturní pokrok 21. století.
+    Od svého založení v roce 1999 se z lokálního technologického startupu stala globálním monolitem,
+    který dnes formuje podobu klíčových odvětví lidské činnosti. S každým dalším rokem naší existence
+    přicházíme s novou etapou rozvoje, která posouvá hranice toho, co považujeme za možné.</p>
+    <blockquote class="motto">
+      <p><b>„Pokrok není volba. Je to evoluční nutnost. Naším cílem není pouze reagovat na budoucnost,
+      naším cílem je ji projektovat, kódovat a řídit."</b></p>
+      <cite>Ing. Tomáš Lhota, MBA., zakladatel a hlavní vizionář Lhota Corp</cite>
+    </blockquote>
+    <p>Dopis zakladatele: „V roce 1999 jsem zakládal Lhota Corp s jedinou vizí: I v malé zemi můžeme
+    dosáhnout velkých výsledků. Věřil jsem, že společná práce a technologický pokrok mohou vyřešit
+    jakýkoliv lidský nedostatek. Dnes, o více než čtvrt století později, již tuto vizi začínáme žít.
+    Každý rok zaznamenáváme stabilní, neúprosný růst. Každý rok optimalizujeme další procesy, budujeme
+    novou infrastrukturu a integrujeme další systémy.</p>
+    <p>Děkuji našim partnerům a především našim oddaným zaměstnancům, kteří každý den dokazují, že pod
+    správným vedením neexistují pro lidský potenciál žádné limity."</p>
+
+    <p class="eyebrow">Struktura skupiny</p>
+    <h2>Klíčové divize</h2>
+    <p>Naše portfolio je diverzifikováno do šesti strategických sekcí, které fungují v dokonalé synergii.</p>
+    <div class="cards">
+      <div class="card"><h3><span class="mono">PROFIL</span></h3>
+        <div class="sub">Optimalizace lidských zdrojů</div>
+        <p><b>Zaměření:</b> Neuro-kognitivní analýzy, zvyšování pracovní efektivity a pokročilý korporátní management.</p>
+        <p><b>Poslání:</b> Člověk je nejcennějším, ale také nejméně stabilním prvkem každého systému. Naším úkolem je maximalizovat lidský potenciál a eliminovat chybovost.</p></div>
+      <div class="card"><h3><span class="mono">OKO</span></h3>
+        <div class="sub">Aplikované technologie a bezpečnost</div>
+        <p><b>Zaměření:</b> Vývoj pokročilých monitorovacích systémů, prediktivní analýza rizik a ochrana kritické infrastruktury.</p>
+        <p><b>Poslání:</b> Zajišťovat stabilitu a bezpečné prostředí pro bezproblémový chod globální ekonomiky. Eliminujeme hrozby dříve, než vůbec vzniknou.</p></div>
+      <div class="card"><h3><span class="mono">KARBON</span></h3>
+        <div class="sub">Životní prostředí a hydrostabilita</div>
+        <p><b>Zaměření:</b> Minimalizace uhlíkové stopy, čistota ovzduší, čištění a distribuce strategických zásob vody a ekologický management.</p>
+        <p><b>Poslání:</b> Voda a vzduch jsou nejcennější komodity budoucnosti. Naše divize zajišťuje stálou, centralizovanou a efektivní kontrolu těchto kritických zdrojů.</p></div>
+      <div class="card"><h3><span class="mono">RACIO</span></h3>
+        <div class="sub">Zemědělství a potravinářství</div>
+        <p><b>Zaměření:</b> Syntetická biologie, genetická optimalizace plodin a automatizovaná produkce nutričně saturovaných potravin.</p>
+        <p><b>Poslání:</b> Odstraňujeme závislost lidstva na nestabilních klimatických podmínkách. Dodáváme standardizované suroviny pro efektivní fungování potravinářských řetězců.</p></div>
+      <div class="card"><h3><span class="mono">OBNOVA</span></h3>
+        <div class="sub">Globální infrastruktura a geo-engineering</div>
+        <p><b>Zaměření:</b> Rozsáhlé stavební projekty, modifikace krajinných reliéfů a přizpůsobování planetárního prostředí potřebám moderní civilizace.</p>
+        <p><b>Poslání:</b> Přebudovávat svět pro potřeby zítřka. Formujeme zemi, překonáváme přírodní limity a dáváme řád divoké přírodě.</p></div>
+      <div class="card"><h3><span class="mono">KONSENS</span></h3>
+        <div class="sub">Mediální činnost a edukace</div>
+        <p><b>Zaměření:</b> Správa informačních toků, strategická komunikace a výchova nové generace systémových integrátorů.</p>
+        <p><b>Poslání:</b> Formujeme vnímání reality a vzděláváme společnost tak, aby byla připravena na nadcházející výzvy. Vytváříme harmonický informační prostor.</p></div>
+    </div>
+    <p>Pod divizemi je tlačítko <b>Zobrazit seznam přihlášených týmů</b>.</p>
+
+    <p class="eyebrow">Naši lidé</p>
+    <h2>Vedení, které transformuje vizi v realitu</h2>
+    <p>Úspěch společnosti Lhota Corp nestojí na náhodě. Stojí na pevném vedení, nekompromisní vizi
+    a schopnosti našich lídrů transformovat tuto vizi v realitu.</p>
+    <div class="cards">
+      <div class="card person"><span class="initials">TL</span><div><b>Ing. Tomáš Lhota, MBA.</b><span>Chief Executive Officer (jediný s fotkou)</span></div></div>
+      <div class="card person"><span class="initials">VP</span><div><b>Vlastimil Peksa</b><span>Chief Technical Operating Officer</span></div></div>
+      <div class="card person"><span class="initials">ES</span><div><b>Elena Szolgayová</b><span>Chief Global Compliance Officer</span></div></div>
+      <div class="card person"><span class="initials">TB</span><div><b>Tereza Augustin Barteková</b><span>Chief Human Capital Officer</span></div></div>
+      <div class="card person"><span class="initials">MA</span><div><b>Marek Augustin</b><span>Chief Global Security Officer</span></div></div>
+    </div>
+    <p style="font-size:14px;color:var(--muted)">U každého je odkaz „Více" s profilem; profily ve snímku webu nejsou.</p>
+
+    <p class="eyebrow">Press Room</p>
+    <h2>Napsali o nás</h2>
+    <p>Výběr „zcela nezávislých analýz a aktuálních reportáží" o přínosu Lhota Corp globální ekonomice,
+    udržitelnému rozvoji a spokojenosti zaměstnanců.</p>
+    <div class="cards">
+      <div class="card"><div class="sub">Věda &amp; technologie dnes · nejnovější</div>
+        <h3>Budoucnost opylení zajištěna: Lhota Corp představuje patentovaná autonomní včelstva</h3>
+        <p>V reakci na celosvětový pokles populací opylovačů představila česká společnost Lhota Corp přelomové řešení…</p></div>
+      <div class="card"><div class="sub">GreenTech Digest · 6. 7. 2026</div>
+        <h3>LhotaCorp dosáhl plné uhlíkové neutrality: Inovativní přístupy v otázce ekologické odpovědnosti</h3>
+        <p>Globální technologický lídr Lhota Corp oficiálně ohlásil splnění nejambicióznějšího environmentálního…</p></div>
+      <div class="card"><div class="sub">Z lokalit · 10. 2. 2026</div>
+        <h3>Lhotabad</h3>
+        <p>V souladu s předními světovými technologickými giganty razí i Lhota Corp budování vlastní
+        kvalifikované pracovní síly. Proto bylo ve spolupráci s lokálními samosprávami založeno
+        technologické město Lhotabad. Lhotabad byl založen…</p></div>
+    </div>
+
+    <p class="eyebrow">Patička</p>
+    <div class="fact"><b>Motto</b><span>Posouváme hranice lidského vědění a řešíme největší problémy světa od roku 1999.</span></div>
+    <div class="fact"><b>Právní úpravy</b><span>Stanovy společnosti (nejspíš pravidla hry) · Kodex zaměstnance</span></div>
+    <div class="fact"><b>Kontakt</b><span>+420 777 091 852 · info@lhotacorp.cz · Facebook</span></div>
+    <div class="fact"><b>Copyright</b><span>© 2026 Lhota Corp a.s. Všechna práva vyhrazena.</span></div>
+
+    <h2>Čeho si všimnout</h2>
+    <p style="font-size:14px;color:var(--muted)">Vlastní postřehy, ne oficiální informace.</p>
+    <ul class="checklist">
+      <li>Počáteční písmena divizí v pořadí z webu dávají <b>P·O·K·R·O·K</b>, a „Pokrok" je první
+      slovo citátu zakladatele i hlavního sloganu. Klasická Lhota: skrytý kód rovnou na webu.</li>
+      <li>Telefon v kontaktu (+420 777 091 852) je v pravidlech linka pro <b>problémy s úkoly</b>.</li>
+      <li>Vedení má monogramy VP, ES, TB, MA; jen CEO má fotku. Kdyby se v hře objevily iniciály nebo
+      funkce (CTOO, CGCO, CHCO, CGSO), vrať se sem.</li>
+      <li>Data v Press Roomu: 6. 7. 2026 a 10. 2. 2026; rok založení 1999 se opakuje všude.</li>
+      <li>Témata divizí (opylovači, uhlík, voda, geo-engineering, Lhotabad) jsou pravděpodobné motivy
+      šifer a úkolů.</li>
+    </ul>
+  </section>
 </main>
 
 <nav class="tabs" aria-label="Sekce">
   <button id="nav-trenink" aria-selected="true">Trénink</button>
   <button id="nav-tahak" aria-selected="false">Tahák</button>
+  <button id="nav-web" aria-selected="false">Lhota Corp</button>
   <button id="nav-ohre" aria-selected="false">O hře</button>
 </nav>
 
@@ -1024,7 +1179,7 @@ function bindTheoryLinks(scope) {
 
 /* ══════════════ záložky ══════════════ */
 
-const TABS = ["trenink", "tahak", "ohre"];
+const TABS = ["trenink", "tahak", "web", "ohre"];
 function switchTab(name) {
   TABS.forEach(t => {
     $(`#tab-${t}`).classList.toggle("active", t === name);
